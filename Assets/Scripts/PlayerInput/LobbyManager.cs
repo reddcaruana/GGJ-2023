@@ -9,7 +9,7 @@ public class LobbyManager : BasePlayerManager<PlayerCursor>
     /// <summary>
     /// The maximum number of players.
     /// </summary>
-    private static readonly int MaxPlayers = 2;
+    private static readonly int MaxPlayers = 4;
     
     [Tooltip("The scene canvas.")]
     [SerializeField] private Canvas canvas;
@@ -18,7 +18,10 @@ public class LobbyManager : BasePlayerManager<PlayerCursor>
     [SerializeField] private GameObject timerObject;
 
     [Tooltip("The character identifiers.")]
-    [SerializeField] private CharacterIdentifier[] characterIdentifiers;
+    [SerializeField] private CharacterReference[] characterIdentifiers;
+    
+    [Tooltip("The transform to parent inputs to.")]
+    [SerializeField] private Transform playerInputParent;
     
     /// <summary>
     /// The canvas scale factor.
@@ -106,7 +109,7 @@ public class LobbyManager : BasePlayerManager<PlayerCursor>
     {
         // Prepare the object.
         playerInput.gameObject.name = $"Player-{playerInput.playerIndex}";
-        playerInput.transform.SetParent(_playerInputManager.transform);
+        playerInput.transform.SetParent(playerInputParent);
 
         PlayerCursor controls = _lobbyInputs[playerInput.playerIndex];
         controls.Bind(playerInput);

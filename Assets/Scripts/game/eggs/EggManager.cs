@@ -20,7 +20,7 @@ namespace Assets.Scripts.game.eggs
                     return eggs[i];
 
             var egg = new Egg();
-            egg.CreateView(null);
+            egg.CreateView(GameController.ME.LevelManager.transform);
             eggs.Add(egg);
 
             return egg;

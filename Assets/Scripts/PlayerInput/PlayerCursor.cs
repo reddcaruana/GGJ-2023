@@ -39,7 +39,12 @@ public class PlayerCursor : BaseControls<PlayerCursor>
     /// <summary>
     /// The character identifier reference.
     /// </summary>
-    private CharacterIdentifier _identifier;
+    private CharacterReference _reference;
+
+    /// <summary>
+    /// The character stats component.
+    /// </summary>
+    private CharacterStats _stats;
 
     // The cursor actions
     private InputAction _move, _confirm, _cancel;
@@ -80,6 +85,14 @@ public class PlayerCursor : BaseControls<PlayerCursor>
     }
 
     /// <summary>
+    /// Release the controls on destroy.
+    /// </summary>
+    private void OnDestroy()
+    {
+        Release();
+    }
+
+    /// <summary>
     /// The activation function.
     /// </summary>
     private void Activate()
@@ -91,6 +104,8 @@ public class PlayerCursor : BaseControls<PlayerCursor>
     public override void Bind(PlayerInput playerInput)
     {
         base.Bind(playerInput);
+
+        _stats = Input.GetComponent<CharacterStats>();
         
         // Switch to the cursor action.
         Input.SwitchCurrentActionMap("Cursor");
@@ -166,7 +181,8 @@ public class PlayerCursor : BaseControls<PlayerCursor>
             _cancel.performed -= Cancel;
             _cancel = null;
         }
-        
+
+        _stats = null;
         base.Release();
     }
 
@@ -181,16 +197,16 @@ public class PlayerCursor : BaseControls<PlayerCursor>
         Collider2D c = Physics2D.OverlapPoint(worldPos);
         if (!c) return;
 
-        CharacterIdentifier identifier = c.GetComponent<CharacterIdentifier>();
-        if (identifier.IsTaken) return;
+        CharacterReference reference = c.GetComponent<CharacterReference>();
+        if (reference.IsTaken) return;
         
-        identifier.SetPlayer(ID);
-        _identifier = identifier;
+        reference.SetPlayer(ID);
+        _reference = reference;
+        _stats.SetID(_reference.ReferenceID);
 
         _inputDirection = Vector2.zero;
-
-        gameObject.SetActive(false);
         
+        gameObject.SetActive(false);
         _manager.Check();
     }
 
@@ -207,10 +223,10 @@ public class PlayerCursor : BaseControls<PlayerCursor>
         }
         else
         {
-            if (_identifier)
+            if (_reference)
             {
-                _identifier.Clear();
-                _identifier = null;
+                _reference.Clear();
+                _reference = null;
             }
             gameObject.SetActive(true);
         }

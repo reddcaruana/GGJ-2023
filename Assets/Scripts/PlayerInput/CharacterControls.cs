@@ -1,3 +1,4 @@
+using Assets.Scripts.game.grabbers;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -23,12 +24,19 @@ public class CharacterControls : BaseControls<CharacterControls>
     /// </summary>
     private InputAction _upAction;
 
+    /// <summary>
+    /// The character ID.
+    /// </summary>
+    private int _id = -1;
+
     /// <inheritdoc />
     public override void Bind(PlayerInput playerInput)
     {
         base.Bind(playerInput);
+        CharacterStats stats = Input.GetComponent<CharacterStats>();
+        _id = stats.ID;
         
-        Input.SwitchCurrentActionMap("Gameplay");
+        Input.SwitchCurrentActionMap("Game");
         
         _downAction = Input.currentActionMap.FindAction("Down");
         _downAction.performed += OnDown;
@@ -79,7 +87,8 @@ public class CharacterControls : BaseControls<CharacterControls>
     /// <param name="ctx">The callback context.</param>
     private void OnDown(InputAction.CallbackContext ctx)
     {
-        transform.Translate(Vector3.down);
+        if (!GameController.ME) return;
+        GameController.ME.LevelManager.OnPlayerInput(_id, DirectionType.Down);
     }
     
     /// <summary>
@@ -88,7 +97,8 @@ public class CharacterControls : BaseControls<CharacterControls>
     /// <param name="ctx">The callback context.</param>
     private void OnLeft(InputAction.CallbackContext ctx)
     {
-        transform.Translate(Vector3.left);
+        if (!GameController.ME) return;
+        GameController.ME.LevelManager.OnPlayerInput(_id, DirectionType.Left);
     }
     
     /// <summary>
@@ -97,7 +107,8 @@ public class CharacterControls : BaseControls<CharacterControls>
     /// <param name="ctx">The callback context.</param>
     private void OnRight(InputAction.CallbackContext ctx)
     {
-        transform.Translate(Vector3.right);
+        if (!GameController.ME) return;
+        GameController.ME.LevelManager.OnPlayerInput(_id, DirectionType.Right);
     }
     
     /// <summary>
@@ -106,6 +117,7 @@ public class CharacterControls : BaseControls<CharacterControls>
     /// <param name="ctx">The callback context.</param>
     private void OnUp(InputAction.CallbackContext ctx)
     {
-        transform.Translate(Vector3.up);
+        if (!GameController.ME) return;
+        GameController.ME.LevelManager.OnPlayerInput(_id, DirectionType.Up);
     }
 }

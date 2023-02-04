@@ -2,7 +2,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class CharacterIdentifier : MonoBehaviour
+public class CharacterReference : MonoBehaviour
 {
     [Tooltip("The character ID.")]
     [SerializeField] private int referenceID;
