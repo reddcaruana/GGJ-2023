@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Assets.Scripts.game.eggs;
+using Assets.Scripts.game.grabbers.data;
 using Assets.Scripts.game.grabbers.views;
 
 namespace Assets.Scripts.game.grabbers
@@ -8,20 +9,19 @@ namespace Assets.Scripts.game.grabbers
 
     public abstract class Grabber
     {
+        protected GrabberSpriteData spriteData;
+
         protected Egg egg;
         public bool HasEgg => egg != null;
-        private GrabberView view;
+        protected GrabberView View { get; private set; }
 
-        public void SetView(GrabberView grabberView) => view = grabberView;
-
-        public void Receive(Egg egg)
+        public void SetView(GrabberView grabberView)
         {
-            this.egg = egg;
-            OnRevevied();
+            View = grabberView;
         }
 
-        protected abstract void OnRevevied();
+        public abstract void Receive(Egg egg);
 
-        public Vector3 GetPosition() => view.transform.position;
+        public Vector3 GetPosition() => View.transform.position;
     }
 }

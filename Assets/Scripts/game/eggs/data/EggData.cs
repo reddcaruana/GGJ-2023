@@ -1,12 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using Assets.Scripts.game.grabbers.data;
 
 namespace Assets.Scripts.game.eggs.data
 {
     public class EggData
     {
         private static readonly List<EggData> eggs = new List<EggData>();
+        public static int Count => eggs.Count;
 
+        public static readonly EggData NoEgg = new EggData("NUll");
         public static readonly EggData EggRed = new EggData("EggRed");
         public static readonly EggData EggBlue = new EggData("EggBlue");
         public static readonly EggData EggGreen = new EggData("EggGreen");
@@ -14,6 +17,7 @@ namespace Assets.Scripts.game.eggs.data
 
         public int Id;
         public string Alias;
+
 
         public EggData(string alias)
         {
@@ -26,7 +30,7 @@ namespace Assets.Scripts.game.eggs.data
 
         public Sprite GetSprite() => Resources.Load<Sprite>("Sprites/Eggs/" + Alias);
 
-        public Sprite GetMotherSprite() => Resources.Load<Sprite>("Sprites/Mothers/" + Alias);
+        public GrabberSpriteData GetMotherSprite() => GrabberSpriteData.GetMotherSpriteData(Id);
 
         public static bool TryFind(int id, out EggData data)
         {
@@ -42,6 +46,6 @@ namespace Assets.Scripts.game.eggs.data
             return null;
         }
 
-        public static EggData GetRandom() => eggs[Random.Range(0, eggs.Count)];
+        public static EggData GetRandom() => eggs[Random.Range(1, eggs.Count)];
     }
 }

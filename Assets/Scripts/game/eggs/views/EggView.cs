@@ -1,26 +1,18 @@
 ﻿using UnityEngine;
+using System;
+using Assets.Scripts.utils;
 using Assets.Scripts.game.eggs.data;
 
 namespace Assets.Scripts.game.eggs.views
 {
-    public class EggView : MonoBehaviour
+    public class EggView : SpriteObject
     {
-        private SpriteRenderer spriteRenderer;
+        public void Set(EggData data) => SpriteRenderer.sprite = data.GetSprite();
 
-        private void Awake()
+        public void Break(Action onComplete)
         {
-            spriteRenderer = GetComponent<SpriteRenderer>();
-        }
-
-        public void Set(int id)
-        {
-            if (!EggData.TryFind(id, out EggData data))
-            {
-                Debug.LogError("[EggView] unable to find Egg data for Id: " + id);
-                return;
-            }
-
-            spriteRenderer.sprite = data.GetSprite();
+            Debug.LogError("*-* Break!!!!!");
+            onComplete();
         }
     }
 }

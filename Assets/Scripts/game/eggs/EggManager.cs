@@ -25,5 +25,15 @@ namespace Assets.Scripts.game.eggs
 
             return egg;
         }
+
+        public static int ActiveCount()
+        {
+            var count = 0;
+            for (int i = 0; i < eggs.Count; i++)
+                if (eggs[i].IsSpawned)
+                    ++count;
+
+            return count;
+        }
     }
 }

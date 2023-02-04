@@ -1,23 +1,23 @@
 ﻿using UnityEngine;
 using Assets.Scripts.game.eggs;
-using Assets.Scripts.game.grabbers;
+using System.Collections.Generic;
 using Assets.Scripts.game.eggs.data;
 using Assets.Scripts.game.grabbers.data;
 using Assets.Scripts.game.dispenser.view;
-using Assets.Scripts.game.grabbers.views;
 
 namespace Assets.Scripts.game.dispenser
 {
     public class Dispenser
     {
-        private PassToGrabberData passToGrabber;
+        private static readonly List<Dispenser> dispensors = new List<Dispenser>();
 
-        public TargetGrabber Grabber { get; private set; } = new TargetGrabber();
+        private PassToGrabberData passToGrabber;
+        private DispensorView view;
 
         private bool HasEgg => egg != null;
         private Egg egg;
 
-        private DispensorView view;
+        public Dispenser() => dispensors.Add(this);
 
         public void Set(PassToGrabberData passToGrabber) => this.passToGrabber = passToGrabber;
 
@@ -31,35 +31,29 @@ namespace Assets.Scripts.game.dispenser
 
             var prefab = Resources.Load<GameObject>("Prefabs/Dispenser/DispenserView");
             view = MonoBehaviour.Instantiate(prefab, parent).AddComponent<DispensorView>();
-
-            CreateGrabberView(parent);
         }
 
-        private void CreateGrabberView(Transform parent)
-        {
-            var prefab = Resources.Load<GameObject>("Prefabs/Grabbers/GrabberView");
-            var view = MonoBehaviour.Instantiate(prefab, parent).AddComponent<GrabberView>();
-            Grabber.SetView(view);
-        }
-
-        public void GenerateEgg()
+        public Egg GenerateEgg()
         {
             egg = EggManager.Spawn();
-            egg.Set(EggData.GetRandom().Id);
+            egg.Set(EggData.GetRandom());
             egg.UpdateView();
+            return egg;
         }
 
         public void Pass()
         {
             if (!HasEgg)
             {
-                Debug.LogError("[Dispenser] Something went wrong... trying to pass null egg...");
+                Debug.LogError("[Dispenser] Something went wrong... Trying to pass null egg...");
                 return;
             }
 
             var grabber = passToGrabber.Grabber;
-            egg.MoveTo(view.transform.position, grabber.GetPosition(), grabber.Receive);
+            egg.MoveTo(passToGrabber.Direction, view.transform.position, grabber.GetPosition(), grabber.Receive);
             egg = null;
         }
+
+        public static Dispenser GetAvailableRandom() => dispensors[Random.Range(0, dispensors.Count)];
     }
 }
