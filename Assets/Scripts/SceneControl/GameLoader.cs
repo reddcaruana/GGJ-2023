@@ -1,8 +1,6 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 
 public class GameLoader : MonoBehaviour
 {
@@ -20,13 +18,13 @@ public class GameLoader : MonoBehaviour
     /// </summary>
     public void StartGame()
     {
-        StartCoroutine(StartGameRoutine());
+        StartCoroutine(LoadSceneRoutine());
     }
 
     /// <summary>
     /// Routine to start the game.
     /// </summary>
-    private IEnumerator StartGameRoutine()
+    private IEnumerator LoadSceneRoutine()
     {
         AsyncOperation playerAsync = SceneManager.LoadSceneAsync(playerStorage, LoadSceneMode.Additive);
 

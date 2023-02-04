@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 
@@ -38,14 +37,28 @@ public class TimerPrinter : MonoBehaviour
     }
 
     /// <summary>
-    /// Prints the timer components remaining time.
+    /// Prints the timer component's remaining time as seconds.
     /// </summary>
     /// <param name="baseTimer">The timer component.</param>
-    public void Print(BaseTimer baseTimer)
+    public void PrintSeconds(BaseTimer baseTimer)
     {
         int duration = Mathf.FloorToInt(baseTimer.Remaining);
         string text = duration > 0 ? $"{duration:0}" : "Go!";
         
         countdownTimer.SetText(text);
+    }
+
+    /// <summary>
+    /// Prints the timer component's remaining time as minutes:seconds.
+    /// </summary>
+    /// <param name="baseTimer">The timer component.</param>
+    public void PrintTime(BaseTimer baseTimer)
+    {
+        int duration = Mathf.FloorToInt(baseTimer.Remaining);
+        
+        int minutes = Mathf.FloorToInt(duration / 60f);
+        int seconds = duration % 60;
+        
+        countdownTimer.SetText($"{minutes}:{seconds:00}");
     }
 }

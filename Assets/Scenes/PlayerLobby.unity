@@ -1320,7 +1320,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerStorage: PlayerStorage
-  game: GameScene_Copy
+  game: GameScene
   playerInputParent: {fileID: 157157452}
 --- !u!1 &1871538471
 GameObject:
@@ -1795,7 +1795,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2137547366}
         m_TargetAssemblyTypeName: TimerPrinter, Assembly-CSharp
-        m_MethodName: Print
+        m_MethodName: PrintSeconds
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
