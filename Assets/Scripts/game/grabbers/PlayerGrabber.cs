@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using Assets.Scripts.utils;
 using Assets.Scripts.game.eggs;
-using Assets.Scripts.game.grabbers.data;
 using Assets.Scripts.controllers;
+using Assets.Scripts.game.grabbers.data;
 
 namespace Assets.Scripts.game.grabbers
 {
@@ -32,6 +32,7 @@ namespace Assets.Scripts.game.grabbers
             void OnPassed() => View.SetIdle(spriteData.GetIdleSprite());
 
             egg.MoveTo(directionType, GetPosition(), grabber.GetPosition(), grabber.Receive);
+            EggManager.CheckForCollision(egg);
             egg = null;
         }
 
@@ -41,8 +42,13 @@ namespace Assets.Scripts.game.grabbers
             {
                 egg.Break();
                 this.egg.Break();
+                this.egg = null;
                 View.SetHit(spriteData.GetHitSprite(), OnHitDone);
-                void OnHitDone() => View.SetIdle(spriteData.GetIdleSprite());
+                void OnHitDone()
+                {
+                    View.SetIdle(spriteData.GetIdleSprite());
+                    GameController.ME.LevelManager.Dispense();
+                }
                 return;
             }
 

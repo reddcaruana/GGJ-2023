@@ -40,17 +40,20 @@ namespace Assets.Scripts.game.level
             SetDispensorView();
         }
 
-        public void Dispens() => Dispens(DispensorController.GetDispensCount());
+        public void Dispense() => Dispense(DispensorController.GetDispensCount());
 
-        private void Dispens(int count)
+        private void Dispense(int count)
         {
             count -= EggManager.ActiveCount();
 
-            for (int i = 0; i < count; i++)
-                DispensInternal();
+            var dispensers = Dispenser.GetAvailableRandom(count);
+            var eggs = EggManager.GetAvailable(count);
+
+            for (int i = 0; i < dispensers.Length; i++)
+                DispenseInternal(dispensers[i], eggs[i]);
         }
 
-        private void DispensInternal()
+        private void DispenseInternal(Dispenser dispenser, Egg egg)
         {
             if (!TryGetAvailableMother(out MotherGrabber mother))
             {
@@ -58,10 +61,9 @@ namespace Assets.Scripts.game.level
                 return;
             }
 
-            var dispensor = Dispenser.GetAvailableRandom();
-            var egg = dispensor.GenerateEgg();
+            dispenser.SetEgg(egg);
             egg.SetMother(mother);
-            dispensor.Pass();
+            dispenser.Pass();
 
             mother.SetSpriteData(egg.Data);
         }

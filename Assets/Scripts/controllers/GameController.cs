@@ -18,7 +18,7 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
-        LevelManager.Dispens();
+        LevelManager.Dispense();
     }
 
     private void Update()

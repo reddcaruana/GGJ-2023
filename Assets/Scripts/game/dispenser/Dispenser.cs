@@ -33,13 +33,7 @@ namespace Assets.Scripts.game.dispenser
             view = MonoBehaviour.Instantiate(prefab, parent).AddComponent<DispensorView>();
         }
 
-        public Egg GenerateEgg()
-        {
-            egg = EggManager.Spawn();
-            egg.Set(EggData.GetRandom());
-            egg.UpdateView();
-            return egg;
-        }
+        public void SetEgg(Egg egg) => this.egg = egg;
 
         public void Pass()
         {
@@ -50,10 +44,28 @@ namespace Assets.Scripts.game.dispenser
             }
 
             var grabber = passToGrabber.Grabber;
-            egg.MoveTo(passToGrabber.Direction, view.transform.position, grabber.GetPosition(), grabber.Receive);
+            egg.Dispense(passToGrabber.Direction, view.transform.position, grabber.GetPosition(), grabber.Receive);
             egg = null;
         }
 
-        public static Dispenser GetAvailableRandom() => dispensors[Random.Range(0, dispensors.Count)];
+        public static Dispenser[] GetAvailableRandom(int count)
+        {
+            var result = new List<Dispenser>();
+
+            const int FAIL_SAFE = 100;
+            int i = 0;
+            do
+            {
+                var d = dispensors[Random.Range(0, dispensors.Count)];
+                if (!result.Contains(d))
+                {
+                    result.Add(d);
+                    i++;
+                }
+            } while (i < count && i < FAIL_SAFE);
+
+            Debug.Log($"*-* Count: {count}, I: {i}");
+            return result.ToArray();
+        }
     }
 }

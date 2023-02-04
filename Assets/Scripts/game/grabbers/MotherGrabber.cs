@@ -62,7 +62,7 @@ namespace Assets.Scripts.game.grabbers
                 this.egg.Break();
 
             this.egg = null;
-            GameController.ME.LevelManager.Dispens();
+            GameController.ME.LevelManager.Dispense();
         }
 
         public void Leave()

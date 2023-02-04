@@ -102,7 +102,7 @@ namespace Assets.Scripts.game.grabbers.views
 
         public Vector3 GetEggAttachmentPosition() => transform.Find("EggAttachment").position;
 
-        private (int, int) GetAxisAndDirection(DirectionType directionType)
+        public static (int, int) GetAxisAndDirection(DirectionType directionType)
         {
             switch (directionType)
             {
