@@ -1226,7 +1226,7 @@ MonoBehaviour:
   - {fileID: 66135200}
   - {fileID: 1954047754}
   canvas: {fileID: 33218428}
-  timerObject: {fileID: 0}
+  timerObject: {fileID: 2137547363}
   characterIdentifiers:
   - {fileID: 1889294647}
   - {fileID: 612348055}

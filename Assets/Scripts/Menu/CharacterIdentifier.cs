@@ -40,7 +40,6 @@ public class CharacterIdentifier : MonoBehaviour
     public void SetPlayer(int index)
     {
         PlayerID = index;
-        Debug.Log($"{referenceID} {index}");
         
         SpriteRenderer sr = GetComponent<SpriteRenderer>();
         sr.color = PlayerCursor.All.First(p => p.ID == index).Color;
