@@ -2,11 +2,11 @@
     "name": "PlayerControls",
     "maps": [
         {
-            "name": "Lobby",
+            "name": "Cursor",
             "id": "94339a46-f3b8-4e04-861e-aad8c3aba483",
             "actions": [
                 {
-                    "name": "Join",
+                    "name": "Confirm",
                     "type": "Button",
                     "id": "679bb87a-7cc2-4ad5-a818-94ee3e2500f8",
                     "expectedControlType": "Button",
@@ -15,13 +15,22 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Leave",
+                    "name": "Cancel",
                     "type": "Button",
                     "id": "87391d48-4609-403e-9de2-3ac87e5bec39",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Move",
+                    "type": "Value",
+                    "id": "afbac7bd-8b96-4a88-b7ee-6495cd809ae4",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -32,7 +41,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Join",
+                    "action": "Confirm",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -43,7 +52,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Leave",
+                    "action": "Cancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "be96996b-afbf-4ec2-8072-efc6209e8b35",
+                    "path": "<HID::usb gamepad           >/stick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
