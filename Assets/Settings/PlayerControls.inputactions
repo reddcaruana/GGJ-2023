@@ -200,6 +200,78 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Leaderboard",
+            "id": "eda4ae2a-4cb0-49d5-a2e6-c6d4b00b0059",
+            "actions": [
+                {
+                    "name": "Select",
+                    "type": "Value",
+                    "id": "fc8bc570-44c6-4518-90dd-4327396ac47f",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "2D Vector",
+                    "id": "2bd9c901-ae44-4096-8c2a-3b5123f7b63c",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Select",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "9fb84283-0ef1-479d-999a-a0ff5b43cbb7",
+                    "path": "<HID::usb gamepad           >/trigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Select",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "65d6ff1e-c39f-4a0b-9da2-94505aa8fd65",
+                    "path": "<HID::usb gamepad           >/button3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Select",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "63d2a4c6-b180-47b9-b879-1d51fdc89bbf",
+                    "path": "<HID::usb gamepad           >/button4",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Select",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "ac2d40ca-c6e7-445f-8abe-2f157b48e109",
+                    "path": "<HID::usb gamepad           >/button2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Select",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                }
+            ]
         }
     ],
     "controlSchemes": []

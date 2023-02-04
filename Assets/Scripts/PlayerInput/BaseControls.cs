@@ -27,14 +27,6 @@ public abstract class BaseControls<T> : MonoBehaviour, IBindable
     protected PlayerInput Input { get; private set; }
 
     /// <summary>
-    /// Assigns the class variables.
-    /// </summary>
-    protected virtual void Awake()
-    {
-        gameObject.SetActive(false);
-    }
-
-    /// <summary>
     /// Flag the player as disconnected.
     /// </summary>
     protected void OnDisable()

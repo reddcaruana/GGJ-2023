@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class PlayerCursor : BaseControls<PlayerCursor>
 {
@@ -28,6 +27,11 @@ public class PlayerCursor : BaseControls<PlayerCursor>
     private RectTransform _rectTransform;
 
     /// <summary>
+    /// The sprite renderer component.
+    /// </summary>
+    private Image _image;
+
+    /// <summary>
     /// The starting position.
     /// </summary>
     private Vector3 _startingPosition;
@@ -48,15 +52,22 @@ public class PlayerCursor : BaseControls<PlayerCursor>
     /// <summary>
     /// Component allocation.
     /// </summary>
-    protected override void Awake()
+    protected void Awake()
     {
         _rectTransform = (RectTransform)transform;
         _startingPosition = _rectTransform.anchoredPosition;
 
-        _manager = FindObjectOfType<LobbyManager>();
+        _image = GetComponent<Image>();
 
-        if (Input == null)
-            base.Awake();
+        _manager = FindObjectOfType<LobbyManager>();
+    }
+
+    /// <summary>
+    /// Deactivates the cursor.
+    /// </summary>
+    private void Start()
+    {
+        Deactivate();
     }
 
     /// <summary>
@@ -66,6 +77,14 @@ public class PlayerCursor : BaseControls<PlayerCursor>
     {
         _rectTransform.Translate(speed * Time.unscaledDeltaTime * _manager.ScaleFactor * _inputDirection);
         CalculateBounds();
+    }
+
+    /// <summary>
+    /// The activation function.
+    /// </summary>
+    private void Activate()
+    {
+        _image.color = color;
     }
 
     /// <inheritdoc />
@@ -85,6 +104,8 @@ public class PlayerCursor : BaseControls<PlayerCursor>
 
         _cancel = Input.currentActionMap.FindAction("Cancel");
         _cancel.performed += Cancel;
+        
+        Activate();
     }
     
     /// <summary>
@@ -121,7 +142,7 @@ public class PlayerCursor : BaseControls<PlayerCursor>
     public void Deactivate()
     {
         _rectTransform.anchoredPosition = _startingPosition;
-        gameObject.SetActive(false);
+        _image.color = color * new Color(1, 1, 1, 0.5f);
     }
 
     /// <inheritdoc />
@@ -165,6 +186,9 @@ public class PlayerCursor : BaseControls<PlayerCursor>
         
         identifier.SetPlayer(ID);
         _identifier = identifier;
+
+        _inputDirection = Vector2.zero;
+
         gameObject.SetActive(false);
         
         _manager.Check();
