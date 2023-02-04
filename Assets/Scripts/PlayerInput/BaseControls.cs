@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public abstract class BasePlayerInput<T> : MonoBehaviour, IBindable
-    where T : BasePlayerInput<T>
+public abstract class BaseControls<T> : MonoBehaviour, IBindable
+    where T : BaseControls<T>
 {
     /// <summary>
     /// A resizable array of all available players.
@@ -33,6 +33,8 @@ public abstract class BasePlayerInput<T> : MonoBehaviour, IBindable
     {
         if (_ActiveInputs.Contains(this as T))
             _ActiveInputs.Remove(this as T);
+        
+        Release();
     }
 
     /// <summary>
@@ -58,7 +60,6 @@ public abstract class BasePlayerInput<T> : MonoBehaviour, IBindable
     /// </summary>
     public virtual void Release()
     {
-        Destroy(Input.gameObject);
         Input = null;
     }
 }

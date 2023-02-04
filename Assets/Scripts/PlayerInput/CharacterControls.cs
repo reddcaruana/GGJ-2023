@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class CharacterInput : BasePlayerInput<CharacterInput>
+public class CharacterControls : BaseControls<CharacterControls>
 {
     /// <summary>
     /// The down action.

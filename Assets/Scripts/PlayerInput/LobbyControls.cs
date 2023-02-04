@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class LobbyInput : BasePlayerInput<LobbyInput>
+public class LobbyControls : BaseControls<LobbyControls>
 {
     /// <summary>
     /// The leave action.
@@ -51,7 +51,11 @@ public class LobbyInput : BasePlayerInput<LobbyInput>
     /// <param name="ctx">The callback context.</param>
     private void OnLeave(InputAction.CallbackContext ctx)
     {
+        GameObject inputGo = Input.gameObject;
+        
         Release();
+        Destroy(inputGo);
+        
         _manager.Restock(this);
     }
 }

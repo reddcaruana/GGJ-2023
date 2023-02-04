@@ -1,11 +1,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(PlayerInputManager))]
-public class LobbyManager : BasePlayerManager<LobbyInput>
+public class LobbyManager : BasePlayerManager<LobbyControls>
 {
+    /// <summary>
+    /// The maximum number of players.
+    /// </summary>
+    private static int _maxPlayers = 4;
+    
     /// <summary>
     /// The number of connected players.
     /// </summary>
@@ -19,7 +24,7 @@ public class LobbyManager : BasePlayerManager<LobbyInput>
     /// <summary>
     /// The lobby input stack.
     /// </summary>
-    private Stack<LobbyInput> _lobbyInputs;
+    private Dictionary<int, LobbyControls> _lobbyInputs;
 
     /// <summary>
     /// Assigns the class variables.
@@ -27,10 +32,14 @@ public class LobbyManager : BasePlayerManager<LobbyInput>
     private void Awake()
     {
         // Adjust the input manager behavior.
-        _playerInputManager = GetComponent<PlayerInputManager>();
+        _playerInputManager = FindObjectOfType<PlayerInputManager>();
+        Assert.IsNotNull(_playerInputManager, "PlayerInputManager doesn't exist!");
+        
         _playerInputManager.notificationBehavior = PlayerNotifications.InvokeCSharpEvents;
 
-        _lobbyInputs = new Stack<LobbyInput>(playerControlledObjects);
+        _lobbyInputs = new Dictionary<int, LobbyControls>();
+        for (int i = 0; i < playerControlledObjects.Length; i++)
+            _lobbyInputs.Add(i, playerControlledObjects[i]);
     }
     
     /// <summary>
@@ -40,6 +49,8 @@ public class LobbyManager : BasePlayerManager<LobbyInput>
     {
         _playerInputManager.onPlayerJoined -= RegisterPlayer;
         _playerInputManager.onPlayerLeft -= RemovePlayer;
+        
+        _playerInputManager.DisableJoining();
     }
 
     /// <summary>
@@ -49,6 +60,9 @@ public class LobbyManager : BasePlayerManager<LobbyInput>
     {
         _playerInputManager.onPlayerJoined += RegisterPlayer;
         _playerInputManager.onPlayerLeft += RemovePlayer;
+        
+        if (PlayerCount < _maxPlayers)
+            _playerInputManager.EnableJoining();
     }
 
     /// <summary>
@@ -59,13 +73,13 @@ public class LobbyManager : BasePlayerManager<LobbyInput>
     {
         // Prepare the object.
         playerInput.gameObject.name = $"Player-{playerInput.playerIndex}";
-        playerInput.transform.SetParent(transform);
+        playerInput.transform.SetParent(_playerInputManager.transform);
 
-        LobbyInput input = _lobbyInputs.Pop();
-        input.Bind(playerInput);
-        input.gameObject.SetActive(true);
+        LobbyControls controls = _lobbyInputs[playerInput.playerIndex];
+        controls.Bind(playerInput);
+        controls.gameObject.SetActive(true);
 
-        if (PlayerCount >= 4)
+        if (PlayerCount >= _maxPlayers)
         {
             _playerInputManager.DisableJoining();
         }
@@ -89,12 +103,10 @@ public class LobbyManager : BasePlayerManager<LobbyInput>
     /// <summary>
     /// Restocks the lobby input.
     /// </summary>
-    /// <param name="input">The lobby input.</param>
-    public void Restock(LobbyInput input)
+    /// <param name="controls">The lobby input.</param>
+    public void Restock(LobbyControls controls)
     {
-        if (!LobbyInput.All.Contains(input)) return;
-        
-        input.gameObject.SetActive(false);
-        _lobbyInputs.Push(input);
+        if (!LobbyControls.All.Contains(controls)) return;
+        controls.gameObject.SetActive(false);
     }
 }
