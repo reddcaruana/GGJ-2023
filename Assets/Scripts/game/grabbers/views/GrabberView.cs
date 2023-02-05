@@ -24,6 +24,8 @@ namespace Assets.Scripts.game.grabbers.views
 
         public void SetPositionType(PositionAlignmentType positionType) => this.positionType = positionType;
 
+        public void SetOrder(int order) => SpriteRenderer.sortingOrder = order;
+
         public Vector3 GetBounds() => SpriteRenderer.bounds.size;
 
         public void SetIdle(Sprite sprite)
@@ -143,8 +145,6 @@ namespace Assets.Scripts.game.grabbers.views
 
         public void Exit(Sprite sprite, Action onComlete)
         {
-            Debug.Log("*-* Exit");
-
             SpriteRenderer.sprite = sprite;
 
             const float duration = 0.3f;

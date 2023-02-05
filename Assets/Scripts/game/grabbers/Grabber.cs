@@ -13,9 +13,10 @@ namespace Assets.Scripts.game.grabbers
         public bool HasEgg => egg != null;
         protected GrabberView View { get; private set; }
 
-        public void SetView(GrabberView grabberView)
+        public void SetView(GrabberView grabberView, int order)
         {
             View = grabberView;
+            View.SetOrder(order);
         }
 
         public abstract void Receive(Egg egg);
