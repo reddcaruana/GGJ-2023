@@ -10,7 +10,9 @@ namespace Assets.Scripts.game.eggs.views
     {
         private Tweener tweener;
 
-        public void SetIdle(Sprite sprite)
+        public void SortOrder(int order) => SpriteRenderer.sortingOrder = order;
+
+        public void SetGood(Sprite sprite)
         {
             KillAnimation();
             SpriteRenderer.sprite = sprite;

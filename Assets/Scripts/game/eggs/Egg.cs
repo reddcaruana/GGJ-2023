@@ -7,6 +7,7 @@ using Assets.Scripts.game.grabbers;
 using Assets.Scripts.game.eggs.data;
 using Assets.Scripts.game.eggs.views;
 using Assets.Scripts.game.directions.data;
+using Assets.Scripts.utils;
 
 namespace Assets.Scripts.game.eggs
 {
@@ -48,13 +49,19 @@ namespace Assets.Scripts.game.eggs
             view.gameObject.SetActive(true);
         }
 
-        public void SetIdle() => view.SetIdle(Data.SpriteData.GetGoodSprite());
+        public void SetGood()
+        {
+            view.SortOrder(0);
+            view.SetGood(Data.SpriteData.GetGoodSprite());
+        }
 
         public void Break()
         {
+            PauseUtils.TryPause(0.3f);
             IsActive = false;
 
             Mother.EggBroken();
+            view.SortOrder(5);
             view.Break(Data.SpriteData.GetBadSprite(), Despawn);
         }
 
