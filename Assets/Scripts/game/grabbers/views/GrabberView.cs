@@ -16,6 +16,8 @@ namespace Assets.Scripts.game.grabbers.views
         private Vector2 localPos;
         private PositionAlignmentType positionType;
         private Tweener tweener;
+        private bool isIdle;
+
         public void CenterSprite()
         {
             localPos = SpriteRenderer.transform.localPosition;
@@ -39,6 +41,8 @@ namespace Assets.Scripts.game.grabbers.views
 
         private void StartIdelAnimation()
         {
+            isIdle = true;
+
             const float endValue = 0.95f;
             const float duration = 1.8f;
 
@@ -202,7 +206,7 @@ namespace Assets.Scripts.game.grabbers.views
 
         public void Woble(DirectionData directionData)
         {
-            KillAnimation();
+            if (!isIdle) return;
 
             const float duration = 0.1f;
             Vector3 target = SpriteRenderer.transform.position;
@@ -230,6 +234,7 @@ namespace Assets.Scripts.game.grabbers.views
         { 
             tweener?.Kill();
             tweener =  null;
+            isIdle = false;
             ResetTransforms();
         }
 
