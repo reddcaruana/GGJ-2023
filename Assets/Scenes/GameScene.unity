@@ -240,7 +240,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 109064beefc2481688a6574a0e7e9e1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  duration: 10
+  duration: 180
   timeScale: 1
   playOnAwake: 1
   mode: 0
