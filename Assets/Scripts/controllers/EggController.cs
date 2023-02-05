@@ -90,10 +90,12 @@ namespace Assets.Scripts.controllers
 
         public static bool CheckForCollision(Egg egg)
         {
+            if (egg.IsDelivery) return false;
+
             for (int i = 0; i < eggs.Count; i++)
             {
                 var e = eggs[i];
-                if (!e.IsSpawned || e == egg || !egg.OnCollisiosnCourse(e)) continue;
+                if (!e.IsSpawned || e.IsDelivery || e == egg || !egg.OnCollisiosnCourse(e)) continue;
 
                 var egg1Pos = e.GetCurrentPosition();
                 var egg2Pos = egg.GetCurrentPosition();
