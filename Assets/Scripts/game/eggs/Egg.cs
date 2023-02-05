@@ -53,7 +53,7 @@ namespace Assets.Scripts.game.eggs
         public void Break()
         {
             IsActive = false;
-            Mother.Leave();
+            Mother.EggBroken();
             view.Break(Data.SpriteData.GetBadSprite(), Despawn);
         }
 

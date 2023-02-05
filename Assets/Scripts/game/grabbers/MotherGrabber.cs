@@ -40,11 +40,15 @@ namespace Assets.Scripts.game.grabbers
             {
                 ScoreController.IncrimentScore(egg.Data.Id);
                 this.egg.ArrivedToMother();
-                Leave();
+                Happy();
             }
             else
                 this.egg.Break();
         }
+
+        private void Happy() => View.Happy(spriteData.GetGoodSprite(), Leave);
+
+        public void EggBroken() => View.Sad(spriteData.GetBadSprite(), Leave);
 
         public void Leave()
         {
