@@ -13,7 +13,7 @@ namespace Assets.Scripts.game.level
 {
     public class LevelManager : MonoBehaviour
     {
-        private readonly PlayerGrabber grabber0 = new PlayerGrabber();
+        public readonly PlayerGrabber grabber0 = new PlayerGrabber();
         private readonly PlayerGrabber grabber1 = new PlayerGrabber();
         private readonly PlayerGrabber grabber2 = new PlayerGrabber();
         private readonly PlayerGrabber grabber3 = new PlayerGrabber();

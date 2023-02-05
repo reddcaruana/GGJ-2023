@@ -205,9 +205,9 @@ namespace Assets.Scripts.game.grabbers.views
             KillAnimation();
 
             const float duration = 0.1f;
-            Vector3 target = transform.position;
-            target[directionData.Axis] = 1f * directionData.DirectionMultiplier;
-            tweener = transform.
+            Vector3 target = SpriteRenderer.transform.position;
+            target[directionData.Axis] += 0.1f * directionData.DirectionMultiplier;
+            tweener = SpriteRenderer.transform.
                 DOMove(target, duration).
                 SetEase(Ease.InOutQuad).
                 SetLoops(2, LoopType.Yoyo).
@@ -221,7 +221,7 @@ namespace Assets.Scripts.game.grabbers.views
 
         private void ResetTransforms()
         {
-            transform.localPosition = localPos;
+            SpriteRenderer.transform.localPosition = localPos;
             transform.localScale = VECTOR3_ONE;
             transform.rotation = Quaternion.identity;
         }
