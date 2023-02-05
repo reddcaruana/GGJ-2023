@@ -22,8 +22,9 @@ public class GameController : MonoBehaviour
 
     private void Update()
     {
-        DebugController.ArrowCheks();
-        DebugController.WSADCheks();
+        //DebugController.ArrowCheks();
+        //DebugController.WSADCheks();
+        DebugController.ArrowCheks(LevelManager.grabber0);
     }
 
     private void LoadView()

@@ -39,23 +39,26 @@ namespace Assets.Scripts.controllers
             }
         }
 
-        public static void ArrowCheks()
+        public static void ArrowCheks() => ArrowCheks(ActiveGrabber[0]);
+
+        public static void ArrowCheks(PlayerGrabber grabber)
         {
-            if (!Automatic && ActiveGrabber[0] != null)
+            if (!Automatic && grabber != null)
             {
                 if (Input.GetKeyDown(KeyCode.LeftArrow))
-                    ActiveGrabber[0].PassTo(DirectionData.Left);
+                    grabber.PassTo(DirectionData.Left);
 
                 else if (Input.GetKeyDown(KeyCode.RightArrow))
-                    ActiveGrabber[0].PassTo(DirectionData.Right);
+                    grabber.PassTo(DirectionData.Right);
 
                 else if (Input.GetKeyDown(KeyCode.UpArrow))
-                    ActiveGrabber[0].PassTo(DirectionData.Up);
+                    grabber.PassTo(DirectionData.Up);
 
                 else if (Input.GetKeyDown(KeyCode.DownArrow))
-                    ActiveGrabber[0].PassTo(DirectionData.Down);
+                    grabber.PassTo(DirectionData.Down);
             }
         }
+
 
         public static void WSADCheks()
         {
