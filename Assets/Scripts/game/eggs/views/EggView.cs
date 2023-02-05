@@ -1,18 +1,61 @@
-﻿using UnityEngine;
-using System;
+﻿using System;
+using UnityEngine;
+using DG.Tweening;
 using Assets.Scripts.utils;
-using Assets.Scripts.game.eggs.data;
+using Assets.Scripts.controllers;
 
 namespace Assets.Scripts.game.eggs.views
 {
     public class EggView : SpriteObject
     {
-        public void Set(EggData data) => SpriteRenderer.sprite = data.GetSprite();
+        private Tweener tweener;
 
-        public void Break(Action onComplete)
+        public void SetIdle(Sprite sprite)
         {
-            Debug.LogError("*-* Break!!!!!");
-            onComplete();
+            KillAnimation();
+            SpriteRenderer.sprite = sprite;
         }
+
+        public void MoveTo(Vector3 from, Vector3 to, float duration, Action onComplete)
+        {
+            KillAnimation();
+
+            tweener = transform.
+                DOMove(to, duration).
+                From(from).
+                SetEase(Ease.Linear).
+                OnComplete(OnComplete);
+
+            void OnComplete()
+            {
+                tweener = null;
+                onComplete?.Invoke();
+            }
+        }
+
+        public void Break(Sprite sprite, Action onComplete)
+        {
+            KillAnimation();
+            SpriteRenderer.sprite = sprite;
+            var targetPosition = transform.position;
+            targetPosition.y -= ViewController.SizY + SpriteRenderer.bounds.size.y;
+            StartBreackAnimation(targetPosition, 0.8f, onComplete);
+        }
+
+        private void StartBreackAnimation(Vector3 position, float duration, Action onComplete)
+        {
+            tweener = transform.
+                DOMove(position, duration).
+                SetEase(Ease.InOutQuad).
+                OnComplete(OnComplete);
+
+            void OnComplete()
+            {
+                tweener = null;
+                onComplete?.Invoke();
+            }
+        }
+
+        private void KillAnimation() => tweener?.Kill();
     }
 }

@@ -3,6 +3,7 @@ using Assets.Scripts.utils;
 using Assets.Scripts.game.eggs;
 using Assets.Scripts.controllers;
 using Assets.Scripts.game.grabbers.data;
+using Assets.Scripts.game.directions.data;
 
 namespace Assets.Scripts.game.grabbers
 {
@@ -18,22 +19,27 @@ namespace Assets.Scripts.game.grabbers
             View.CenterSprite();
         }
 
-        public void PassTo(DirectionType directionType)
+        public void PassTo(DirectionData directionData)
         {
             if (!HasEgg) return;
 
-            if (!TryFindOtherGrabber(directionType, out Grabber grabber))
+            if (!TryFindOtherGrabber(directionData, out Grabber grabber))
             {
-                Debug.LogError("[Grabber] Did not find GrabberData for Direction: " + directionType);
+                Debug.LogError("[Grabber] Did not find GrabberData for Direction: " + directionData);
                 return;
             }
 
-            View.SetPass(spriteData.GetPassSprite(), directionType, OnPassed);
+            View.SetPass(spriteData.GetPassSprite(), directionData, OnPassed);
             void OnPassed() => View.SetIdle(spriteData.GetIdleSprite());
 
-            egg.MoveTo(directionType, GetPosition(), grabber.GetPosition(), grabber.Receive);
-            EggManager.CheckForCollision(egg);
+            DebugController.Remove(this);
+
+            egg.MoveTo(directionData, GetPosition(), grabber.GetPosition(), grabber.Receive);
+            var e = egg;
             egg = null;
+
+            EggController.CheckForCollision(e);
+
         }
 
         public override void Receive(Egg egg)
@@ -55,9 +61,9 @@ namespace Assets.Scripts.game.grabbers
             this.egg = egg;
            
             egg.MouthPosition(View.GetEggAttachmentPosition());
-            View.SetReceive(spriteData.GetRecieveSprite(), egg.DirectionType);
+            View.SetReceive(spriteData.GetRecieveSprite(), egg.DirectionData);
 
-            DebugController.ActiveGrabber = this;
+            DebugController.Add(this);
 
             if (DebugController.Automatic)
             {
@@ -65,21 +71,21 @@ namespace Assets.Scripts.game.grabbers
                 void OnDoneWaiting()
                 {
                     var passTo = PassToData[Random.Range(0, PassToData.Length)];
-                    PassTo(passTo.Direction);
+                    PassTo(passTo.DirectionData);
                 }
             }
         }
 
-        private bool TryFindOtherGrabber(DirectionType directionType, out Grabber grabber)
+        private bool TryFindOtherGrabber(DirectionData directionData, out Grabber grabber)
         {
-            grabber = FindOtherGrabber(directionType);
+            grabber = FindOtherGrabber(directionData);
             return grabber != null;
         }
 
-        private Grabber FindOtherGrabber(DirectionType directionType)
+        private Grabber FindOtherGrabber(DirectionData directionData)
         {
             for (int i = 0; i < PassToData.Length; i++)
-                if (PassToData[i].Direction == directionType)
+                if (PassToData[i].DirectionData.Compare(directionData))
                     return PassToData[i].Grabber;
             return null;
         }

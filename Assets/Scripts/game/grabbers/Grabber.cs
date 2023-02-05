@@ -5,8 +5,6 @@ using Assets.Scripts.game.grabbers.views;
 
 namespace Assets.Scripts.game.grabbers
 {
-    public enum DirectionType { Left, Right, Up, Down }  
-
     public abstract class Grabber
     {
         protected GrabberSpriteData spriteData;
