@@ -4,6 +4,7 @@ using DG.Tweening;
 using Assets.Scripts.utils;
 using Assets.Scripts.controllers;
 using Assets.Scripts.game.directions.data;
+using static Assets.Scripts.game.grabbers.MotherGrabber;
 
 namespace Assets.Scripts.game.grabbers.views
 {
@@ -12,6 +13,7 @@ namespace Assets.Scripts.game.grabbers.views
         public static readonly Vector3 VECTOR3_ONE = Vector3.one;
         public static readonly Vector3 SCALE_FLIP_RIGHT = new Vector3(-1f, 1, 1f);
 
+        private PositionAlignmentType positionType;
         private Tweener tweener;
         public void CenterSprite()
         {
@@ -19,6 +21,8 @@ namespace Assets.Scripts.game.grabbers.views
             loaclPos.y -= SpriteRenderer.bounds.size.y / 2f;
             SpriteRenderer.transform.localPosition = loaclPos;
         }
+
+        public void SetPositionType(PositionAlignmentType positionType) => this.positionType = positionType;
 
         public Vector3 GetBounds() => SpriteRenderer.bounds.size;
 
@@ -113,14 +117,13 @@ namespace Assets.Scripts.game.grabbers.views
 
         public void Enter(Sprite sprite, Action onComlete)
         {
-            Debug.Log("*-* Enter");
             gameObject.SetActive(true);
             SpriteRenderer.sprite = sprite;
 
             KillAnimation();
             const float duration = 0.3f;
 
-            var targetPos = transform.position;
+            var targetPos = transform.parent.position;
             var startPos = targetPos;
             startPos.y += ViewController.SizY + SpriteRenderer.bounds.size.y;
             tweener = transform.
@@ -158,9 +161,29 @@ namespace Assets.Scripts.game.grabbers.views
             void OnComplete()
             {
                 gameObject.SetActive(false);
+                FixPosition();
                 tweener = null;
                 onComlete?.Invoke();
             }
+        }
+
+        public void FixPosition()
+        {
+            var position = transform.parent.position;
+
+            switch (positionType)
+            {
+                case PositionAlignmentType.BottomRightRight: position.x = (ViewController.SizX / 2f) - (GetBounds().x / 2f); break;
+                case PositionAlignmentType.BottomRight: position.y = -(ViewController.SizY / 2f) + (GetBounds().y / 2f); break;
+                case PositionAlignmentType.BottomLeft: position.y = -(ViewController.SizY / 2f) + (GetBounds().y / 2f); break;
+                case PositionAlignmentType.BottomLeftLeft: position.x = -(ViewController.SizX / 2f) + (GetBounds().x / 2f); break;
+                case PositionAlignmentType.UpperLeftLeft: position.x = -(ViewController.SizX / 2f) + (GetBounds().x / 2f); break;
+                case PositionAlignmentType.UpperLeft: position.y = (ViewController.SizY / 2f) - (GetBounds().y / 2f); break;
+                case PositionAlignmentType.UpperRight: position.y = (ViewController.SizY / 2f) - (GetBounds().y / 2f); break;
+                case PositionAlignmentType.UpperRightRight: position.x = (ViewController.SizX / 2f) - (GetBounds().x / 2f); break;
+            }
+
+            transform.position = position;
         }
 
         public Vector3 GetEggAttachmentPosition() => transform.Find("EggAttachment").position;

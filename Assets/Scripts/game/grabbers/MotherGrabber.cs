@@ -13,6 +13,8 @@ namespace Assets.Scripts.game.grabbers
 
         public MotherGrabber() => MotherController.Add(this);
 
+        public void SetPositionType(PositionAlignmentType positionType) => View.SetPositionType(positionType);
+
         public void SetSpriteData(EggData eggData)
         {
             expectedEggId = eggData.Id;
@@ -24,26 +26,10 @@ namespace Assets.Scripts.game.grabbers
                 void OnEnetered() => View.SetIdle(spriteData.GetIdleSprite());
             }
             else
-                Leave();
-        }
-
-        public void FixPosition(PositionAlignmentType positionType)
-        {
-            var position = View.transform.parent.position;
-
-            switch (positionType)
             {
-                case PositionAlignmentType.BottomRightRight: position.x = (ViewController.SizX / 2f) - (View.GetBounds().x / 2f); break;
-                case PositionAlignmentType.BottomRight: position.y = -(ViewController.SizY / 2f) + (View.GetBounds().y / 2f); break;
-                case PositionAlignmentType.BottomLeft: position.y = -(ViewController.SizY / 2f) + (View.GetBounds().y / 2f); break;
-                case PositionAlignmentType.BottomLeftLeft: position.x = -(ViewController.SizX / 2f) + (View.GetBounds().x / 2f); break;
-                case PositionAlignmentType.UpperLeftLeft: position.x = -(ViewController.SizX / 2f) + (View.GetBounds().x / 2f); break;
-                case PositionAlignmentType.UpperLeft: position.y = (ViewController.SizY / 2f) - (View.GetBounds().y / 2f); break;
-                case PositionAlignmentType.UpperRight: position.y = (ViewController.SizY / 2f) - (View.GetBounds().y / 2f); break;
-                case PositionAlignmentType.UpperRightRight: position.x = (ViewController.SizX / 2f) - (View.GetBounds().x / 2f); break;
+                View.ExitNoAnim();
+                egg = null;
             }
-
-            View.transform.parent.position = position;
         }
 
         public override void Receive(Egg egg)
@@ -54,26 +40,17 @@ namespace Assets.Scripts.game.grabbers
             {
                 ScoreController.IncrimentScore(egg.Data.Id);
                 this.egg.ArrivedToMother();
-                this.egg = null;
                 Leave();
             }
             else
                 this.egg.Break();
-
-            this.egg = null;
-            GameController.ME.LevelManager.Dispense();
         }
 
         public void Leave()
         {
-            if (spriteData == null)
-            {
-                View.ExitNoAnim();
-                Continue();
-            }
-            else
-                View.Exit(spriteData.GetFallingSprite(), Continue);
-
+            GameController.ME.LevelManager.Dispense();
+            egg = null;
+            View.Exit(spriteData.GetFallingSprite(), Continue);
             void Continue() => expectedEggId = EggData.NoEgg.Id;
         }
     }

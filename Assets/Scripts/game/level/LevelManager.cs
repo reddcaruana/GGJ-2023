@@ -57,8 +57,8 @@ namespace Assets.Scripts.game.level
             var mothers = MotherController.GetAvailableRandom(eggs.Length);
             var dispensers = DispensorController.GetAvailableRandom(eggs.Length);
 
-            if (dispensers.Length !=  eggs.Length)
-                Debug.LogError($"[LevelManager] Dispenser and Egg Count do not match: {dispensers.Length} vs {eggs.Length}");
+            if (dispensers.Length != eggs.Length || mothers.Length != eggs.Length)
+                Debug.LogError($"[LevelManager] Dispenser: {dispensers.Length}, Egg: {eggs.Length}, and Mothers {mothers.Length} Count do not match.");
 
             for (int i = 0; i < dispensers.Length; i++)
                 DispenseInternal(dispensers[i], eggs[i], mothers[i]);
@@ -145,7 +145,7 @@ namespace Assets.Scripts.game.level
             var view = Instantiate(prefab, parent).AddComponent<GrabberView>();
             view.name = parentName + "View";
             grabber.SetView(view);
-            //grabber.FixPosition(posType);
+            grabber.SetPositionType(posType);
             grabber.SetSpriteData(EggData.NoEgg);
         }
 

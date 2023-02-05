@@ -38,8 +38,7 @@ namespace Assets.Scripts.game.grabbers
             var e = egg;
             egg = null;
 
-            if (EggController.CheckForCollision(e))
-                GameController.ME.LevelManager.Dispense();
+            EggController.CheckForCollision(e);
 
         }
 
