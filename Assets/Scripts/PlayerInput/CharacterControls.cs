@@ -1,3 +1,4 @@
+using Assets.Scripts.game.directions.data;
 using Assets.Scripts.game.grabbers;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -88,7 +89,7 @@ public class CharacterControls : BaseControls<CharacterControls>
     private void OnDown(InputAction.CallbackContext ctx)
     {
         if (!GameController.ME) return;
-        GameController.ME.LevelManager.OnPlayerInput(_id, DirectionType.Down);
+        GameController.ME.LevelManager.OnPlayerInput(_id, DirectionData.Down);
     }
     
     /// <summary>
@@ -98,7 +99,7 @@ public class CharacterControls : BaseControls<CharacterControls>
     private void OnLeft(InputAction.CallbackContext ctx)
     {
         if (!GameController.ME) return;
-        GameController.ME.LevelManager.OnPlayerInput(_id, DirectionType.Left);
+        GameController.ME.LevelManager.OnPlayerInput(_id, DirectionData.Left);
     }
     
     /// <summary>
@@ -108,7 +109,7 @@ public class CharacterControls : BaseControls<CharacterControls>
     private void OnRight(InputAction.CallbackContext ctx)
     {
         if (!GameController.ME) return;
-        GameController.ME.LevelManager.OnPlayerInput(_id, DirectionType.Right);
+        GameController.ME.LevelManager.OnPlayerInput(_id, DirectionData.Right);
     }
     
     /// <summary>
@@ -118,6 +119,6 @@ public class CharacterControls : BaseControls<CharacterControls>
     private void OnUp(InputAction.CallbackContext ctx)
     {
         if (!GameController.ME) return;
-        GameController.ME.LevelManager.OnPlayerInput(_id, DirectionType.Up);
+        GameController.ME.LevelManager.OnPlayerInput(_id, DirectionData.Up);
     }
 }
