@@ -462,7 +462,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 83889933}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.25, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 603629712}
@@ -752,6 +752,7 @@ GameObject:
   - component: {fileID: 226742748}
   - component: {fileID: 226742749}
   - component: {fileID: 226742750}
+  - component: {fileID: 226742751}
   m_Layer: 0
   m_Name: Character-3
   m_TagString: Untagged
@@ -851,6 +852,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.28, y: 1.61}
   m_EdgeRadius: 0
+--- !u!114 &226742751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 226742747}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 569ed80f52744e6b91fe689598f505f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceID: 3
+  cursorPoint: {fileID: 375811136}
 --- !u!1 &260395411
 GameObject:
   m_ObjectHideFlags: 0
@@ -1039,7 +1054,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 375811135}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.25, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 226742748}
@@ -1233,7 +1248,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 487104018}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.25, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1672782638}
@@ -1413,6 +1428,7 @@ GameObject:
   - component: {fileID: 603629712}
   - component: {fileID: 603629713}
   - component: {fileID: 603629714}
+  - component: {fileID: 603629715}
   m_Layer: 0
   m_Name: Character-2
   m_TagString: Untagged
@@ -1512,6 +1528,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.28, y: 1.61}
   m_EdgeRadius: 0
+--- !u!114 &603629715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 603629711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 569ed80f52744e6b91fe689598f505f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceID: 2
+  cursorPoint: {fileID: 83889934}
 --- !u!1 &708836858
 GameObject:
   m_ObjectHideFlags: 0
@@ -2725,6 +2755,7 @@ GameObject:
   - component: {fileID: 1672782638}
   - component: {fileID: 1672782639}
   - component: {fileID: 1672782640}
+  - component: {fileID: 1672782641}
   m_Layer: 0
   m_Name: Character-1
   m_TagString: Untagged
@@ -2824,6 +2855,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.28, y: 1.61}
   m_EdgeRadius: 0
+--- !u!114 &1672782641
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1672782637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 569ed80f52744e6b91fe689598f505f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceID: 1
+  cursorPoint: {fileID: 487104019}
 --- !u!1 &1674401473
 GameObject:
   m_ObjectHideFlags: 0
@@ -3085,10 +3130,10 @@ MonoBehaviour:
   canvas: {fileID: 33218428}
   timerObject: {fileID: 2137547363}
   characterIdentifiers:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 217767919}
+  - {fileID: 1672782641}
+  - {fileID: 603629715}
+  - {fileID: 226742751}
   playerInputParent: {fileID: 157157453}
   titleScreenObject: {fileID: 1297444866}
 --- !u!4 &1781791317
@@ -3188,7 +3233,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1824433306}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.25, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 217767916}
@@ -3847,7 +3892,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2131934165}
   m_Layer: 0
-  m_Name: Environment (1)
+  m_Name: Environment
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

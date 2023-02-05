@@ -36,9 +36,6 @@ public class CharacterReference : MonoBehaviour
     public void Clear()
     {
         PlayerID = -1;
-        
-        SpriteRenderer sr = GetComponent<SpriteRenderer>();
-        sr.color = Color.white;
     }
 
     /// <summary>
@@ -48,8 +45,5 @@ public class CharacterReference : MonoBehaviour
     public void SetPlayer(int index)
     {
         PlayerID = index;
-        
-        SpriteRenderer sr = GetComponent<SpriteRenderer>();
-        sr.color = PlayerCursor.All.First(p => p.ID == index).Color;
     }
 }

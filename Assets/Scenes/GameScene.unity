@@ -614,7 +614,7 @@ MonoBehaviour:
   duration: 180
   timeScale: 1
   playOnAwake: 1
-  mode: 0
+  mode: 1
   onUpdate:
     m_PersistentCalls:
       m_Calls:

@@ -224,8 +224,9 @@ public class PlayerCursor : BaseControls<PlayerCursor>
         Vector2 position = _manager.ViewportToCanvasSpace(viewport);
         _rectTransform.anchoredPosition = position;
 
-        enabled = false;
+        _rectTransform.localScale = Vector3.one * 0.75f;
         _manager.Check();
+        enabled = false;
     }
 
     /// <summary>
@@ -250,7 +251,10 @@ public class PlayerCursor : BaseControls<PlayerCursor>
         // }
 
         enabled = true;
-        _manager.Check();
+        _rectTransform.localScale = Vector3.one;
+        
+        if (!(_manager is ScoreScreenManager))
+            _manager.Check();
     }
 
     /// <summary>
@@ -278,7 +282,7 @@ public class PlayerCursor : BaseControls<PlayerCursor>
 
         foreach (RaycastResult result in results)
         {
-            ExecuteEvents.Execute(result.gameObject, new BaseEventData(EventSystem.current),
+            ExecuteEvents.ExecuteHierarchy(result.gameObject, new BaseEventData(EventSystem.current),
                 ExecuteEvents.submitHandler);
         }
     }
