@@ -34,11 +34,11 @@ public class GameLoader : MonoBehaviour
         Scene scene = SceneManager.GetSceneByName(playerStorage);
         SceneManager.MoveGameObjectToScene(playerInputParent, scene);
         
-        SceneManager.UnloadSceneAsync("PlayerLobby");
-        
         AsyncOperation gameAsync = SceneManager.LoadSceneAsync(game, LoadSceneMode.Additive);
             
         while (!gameAsync.isDone)
             yield return null;
+        
+        SceneManager.UnloadSceneAsync("PlayerLobby");
     }
 }

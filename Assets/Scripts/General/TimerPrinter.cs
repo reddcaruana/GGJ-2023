@@ -43,7 +43,7 @@ public class TimerPrinter : MonoBehaviour
     public void PrintSeconds(BaseTimer baseTimer)
     {
         int duration = Mathf.FloorToInt(baseTimer.Remaining);
-        string text = duration > 0 ? $"{duration:0}" : "Go!";
+        string text = duration > 0 ? $"{duration:0}" : "GO!";
         
         countdownTimer.SetText(text);
     }

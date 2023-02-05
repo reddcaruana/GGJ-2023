@@ -159,7 +159,7 @@ public class PlayerCursor : BaseControls<PlayerCursor>
     public void Deactivate()
     {
         _rectTransform.anchoredPosition = _startingPosition;
-        _image.color = color * new Color(1, 1, 1, 0.5f);
+        _image.color = color * new Color(1, 1, 1, 0.4f);
     }
 
     /// <inheritdoc />
@@ -194,7 +194,17 @@ public class PlayerCursor : BaseControls<PlayerCursor>
     /// <param name="ctx">The callback context.</param>
     private void Confirm(InputAction.CallbackContext ctx)
     {
-        Raycast();
+        if (_manager is ScoreScreenManager screenManager)
+        {
+            if (!screenManager.returnToLobby)
+            {
+                Raycast();
+            }
+            else
+            {
+                screenManager.ReturnToLobby();
+            }
+        }
         
         Vector2 worldPos = Camera.main.ScreenToWorldPoint(_rectTransform.position);
         
@@ -209,8 +219,12 @@ public class PlayerCursor : BaseControls<PlayerCursor>
         _stats.SetID(_reference.ReferenceID);
 
         _inputDirection = Vector2.zero;
-        
-        gameObject.SetActive(false);
+
+        Vector2 viewport = Camera.main.WorldToViewportPoint(_reference.CursorPoint);
+        Vector2 position = _manager.ViewportToCanvasSpace(viewport);
+        _rectTransform.anchoredPosition = position;
+
+        enabled = false;
         _manager.Check();
     }
 
@@ -234,7 +248,8 @@ public class PlayerCursor : BaseControls<PlayerCursor>
             }
             gameObject.SetActive(true);
         // }
-        
+
+        enabled = true;
         _manager.Check();
     }
 
@@ -244,7 +259,7 @@ public class PlayerCursor : BaseControls<PlayerCursor>
     /// <param name="ctx">The callback context.</param>
     private void Move(InputAction.CallbackContext ctx)
     {
-        if (!gameObject.activeSelf) return;
+        if (!enabled) return;
         _inputDirection = ctx.ReadValue<Vector2>();
     }
 
@@ -253,7 +268,6 @@ public class PlayerCursor : BaseControls<PlayerCursor>
     /// </summary>
     private void Raycast()
     {
-        Debug.Log("Hello");
         PointerEventData data = new PointerEventData(EventSystem.current)
         {
             position = _rectTransform.anchoredPosition * _manager.ScaleFactor

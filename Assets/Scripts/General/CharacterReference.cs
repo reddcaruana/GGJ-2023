@@ -6,11 +6,19 @@ public class CharacterReference : MonoBehaviour
 {
     [Tooltip("The character ID.")]
     [SerializeField] private int referenceID;
+
+    [Tooltip("The cursor point.")]
+    [SerializeField] private Transform cursorPoint;
     
     /// <summary>
     /// The character ID.
     /// </summary>
     public int ReferenceID => referenceID;
+
+    /// <summary>
+    /// The cursor point position.
+    /// </summary>
+    public Vector3 CursorPoint => cursorPoint.position;
 
     /// <summary>
     /// The player ID.

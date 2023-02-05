@@ -3,14 +3,13 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
 
 public class LobbyManager : BaseCanvasManager
 {
     /// <summary>
     /// The maximum number of players.
     /// </summary>
-    private static readonly int MaxPlayers = 1;
+    private static readonly int MaxPlayers = 4;
 
     [Tooltip("The timer object.")]
     [SerializeField] private GameObject timerObject;
@@ -20,6 +19,9 @@ public class LobbyManager : BaseCanvasManager
     
     [Tooltip("The transform to parent inputs to.")]
     [SerializeField] private Transform playerInputParent;
+
+    [Tooltip("The title screen object.")]
+    [SerializeField] private GameObject titleScreenObject;
     
     /// <summary>
     /// The number of connected players.
@@ -100,6 +102,8 @@ public class LobbyManager : BaseCanvasManager
         controls.Bind(playerInput);
         controls.gameObject.SetActive(true);
 
+        titleScreenObject.SetActive(PlayerInput.all.Count == 0);
+        
         if (PlayerCount >= MaxPlayers)
         {
             _playerInputManager.DisableJoining();
