@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
@@ -19,7 +21,7 @@ public class PlayerCursor : BaseControls<PlayerCursor>
     /// <summary>
     /// The lobby manager.
     /// </summary>
-    private LobbyManager _manager;
+    private BaseCanvasManager _manager;
 
     /// <summary>
     /// The Rect Transform component.
@@ -64,7 +66,7 @@ public class PlayerCursor : BaseControls<PlayerCursor>
 
         _image = GetComponent<Image>();
 
-        _manager = FindObjectOfType<LobbyManager>();
+        _manager = FindObjectOfType<BaseCanvasManager>();
     }
 
     /// <summary>
@@ -192,6 +194,8 @@ public class PlayerCursor : BaseControls<PlayerCursor>
     /// <param name="ctx">The callback context.</param>
     private void Confirm(InputAction.CallbackContext ctx)
     {
+        Raycast();
+        
         Vector2 worldPos = Camera.main.ScreenToWorldPoint(_rectTransform.position);
         
         Collider2D c = Physics2D.OverlapPoint(worldPos);
@@ -216,20 +220,20 @@ public class PlayerCursor : BaseControls<PlayerCursor>
     /// <param name="ctx">The callback context.</param>
     private void Cancel(InputAction.CallbackContext ctx)
     {
-        if (gameObject.activeSelf)
-        {
-            Destroy(Input.gameObject);
-            _manager.Deregister(this);
-        }
-        else
-        {
+        // if (gameObject.activeSelf)
+        // {
+        //     Destroy(Input.gameObject);
+        //     _manager.Deregister(this);
+        // }
+        // else
+        // {
             if (_reference)
             {
                 _reference.Clear();
                 _reference = null;
             }
             gameObject.SetActive(true);
-        }
+        // }
         
         _manager.Check();
     }
@@ -242,5 +246,26 @@ public class PlayerCursor : BaseControls<PlayerCursor>
     {
         if (!gameObject.activeSelf) return;
         _inputDirection = ctx.ReadValue<Vector2>();
+    }
+
+    /// <summary>
+    /// Raycasts and clicks the button.
+    /// </summary>
+    private void Raycast()
+    {
+        Debug.Log("Hello");
+        PointerEventData data = new PointerEventData(EventSystem.current)
+        {
+            position = _rectTransform.anchoredPosition * _manager.ScaleFactor
+        };
+
+        List<RaycastResult> results = new List<RaycastResult>();
+        _manager.Raycaster.Raycast(data, results);
+
+        foreach (RaycastResult result in results)
+        {
+            ExecuteEvents.Execute(result.gameObject, new BaseEventData(EventSystem.current),
+                ExecuteEvents.submitHandler);
+        }
     }
 }

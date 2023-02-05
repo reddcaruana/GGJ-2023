@@ -3,16 +3,14 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
-public class LobbyManager : BasePlayerManager<PlayerCursor>
+public class LobbyManager : BaseCanvasManager
 {
     /// <summary>
     /// The maximum number of players.
     /// </summary>
-    private static readonly int MaxPlayers = 4;
-    
-    [Tooltip("The scene canvas.")]
-    [SerializeField] private Canvas canvas;
+    private static readonly int MaxPlayers = 1;
 
     [Tooltip("The timer object.")]
     [SerializeField] private GameObject timerObject;
@@ -22,11 +20,6 @@ public class LobbyManager : BasePlayerManager<PlayerCursor>
     
     [Tooltip("The transform to parent inputs to.")]
     [SerializeField] private Transform playerInputParent;
-    
-    /// <summary>
-    /// The canvas scale factor.
-    /// </summary>
-    public float ScaleFactor => canvas.scaleFactor;
     
     /// <summary>
     /// The number of connected players.
@@ -46,8 +39,10 @@ public class LobbyManager : BasePlayerManager<PlayerCursor>
     /// <summary>
     /// Assigns the class variables.
     /// </summary>
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+        
         // Adjust the input manager behavior.
         _playerInputManager = FindObjectOfType<PlayerInputManager>();
         Assert.IsNotNull(_playerInputManager, "PlayerInputManager doesn't exist!");
@@ -85,20 +80,10 @@ public class LobbyManager : BasePlayerManager<PlayerCursor>
     /// <summary>
     /// Checks for player updates.
     /// </summary>
-    public void Check()
+    public override void Check()
     {
         int count = characterIdentifiers.Count(c => c.IsTaken);
         timerObject.SetActive(count >= MaxPlayers);
-    }
-
-    /// <summary>
-    /// Restocks the lobby input.
-    /// </summary>
-    /// <param name="controls">The lobby input.</param>
-    public void Deregister(PlayerCursor controls)
-    {
-        if (!PlayerCursor.All.Contains(controls)) return;
-        controls.Deactivate();
     }
 
     /// <summary>

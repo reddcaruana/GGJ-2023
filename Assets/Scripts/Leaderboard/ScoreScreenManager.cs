@@ -2,7 +2,7 @@ using Assets.Scripts.controllers;
 using TMPro;
 using UnityEngine;
 
-public class ScoreDisplay : MonoBehaviour
+public class ScoreScreenManager : BaseCanvasManager
 {
     [Tooltip("The score text.")]
     [SerializeField] private TextMeshProUGUI text;
@@ -15,5 +15,12 @@ public class ScoreDisplay : MonoBehaviour
         int score = ScoreController.TotalScore();
         string points = score == 1 ? "pt" : "pts";
         text.SetText($"{score}<size=48>{points}</size>");
+        
+        BindControls();
+    }
+
+    public override void Check()
+    {
+        Debug.Log("Hi");
     }
 }
