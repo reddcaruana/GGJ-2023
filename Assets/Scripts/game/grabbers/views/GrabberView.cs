@@ -186,6 +186,18 @@ namespace Assets.Scripts.game.grabbers.views
             transform.position = position;
         }
 
+        public void Happy(Sprite sprite, Action onComlpete)
+        {
+            SpriteRenderer.sprite = sprite;
+            CoroutineRunner.ME.Wait(1f, onComlpete);
+        }
+
+        public void Sad(Sprite sprite, Action onComlpete)
+        {
+            SpriteRenderer.sprite = sprite;
+            CoroutineRunner.ME.Wait(1f, onComlpete);
+        }
+
         public Vector3 GetEggAttachmentPosition() => transform.Find("EggAttachment").position;
 
         private void ResetTransforms()
@@ -199,6 +211,6 @@ namespace Assets.Scripts.game.grabbers.views
             tweener?.Kill();
             tweener =  null;
             ResetTransforms();
-        }        
+        }
     }
 }

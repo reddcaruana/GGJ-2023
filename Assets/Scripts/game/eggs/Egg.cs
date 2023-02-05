@@ -6,6 +6,7 @@ using Assets.Scripts.game.grabbers;
 using Assets.Scripts.game.eggs.data;
 using Assets.Scripts.game.eggs.views;
 using Assets.Scripts.game.directions.data;
+using Assets.Scripts.game.stork;
 
 namespace Assets.Scripts.game.eggs
 {
@@ -52,7 +53,7 @@ namespace Assets.Scripts.game.eggs
         public void Break()
         {
             IsActive = false;
-            Mother.Leave();
+            Mother.EggBroken();
             view.Break(Data.SpriteData.GetBadSprite(), Despawn);
         }
 
@@ -77,6 +78,8 @@ namespace Assets.Scripts.game.eggs
         public void Dispense(DirectionData directionData, Vector3 from, Vector3 to, Action<Egg> arrivedCallback)
         {
             var duration = DurationToDispose(Vector2.Distance(from, to));
+            var stork = Stork.GetStork();
+            stork.Deliver(from, to, duration);
             MoveTo(directionData, from, to, duration, arrivedCallback);
         }
 
