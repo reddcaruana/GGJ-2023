@@ -41,7 +41,7 @@ namespace Assets.Scripts.controllers
             {
                 var egg = Spawn();
                 egg.Set(data[j]);
-                egg.SetIdle();
+                egg.SetGood();
                 eggs[j] = egg;
             }
 
@@ -98,9 +98,8 @@ namespace Assets.Scripts.controllers
                 var egg1Pos = e.GetCurrentPosition();
                 var egg2Pos = egg.GetCurrentPosition();
 
-                var distance = Vector3.Distance(egg1Pos, egg2Pos);
+                var distance = Vector3.Distance(egg1Pos, egg2Pos) / 2f;
 
-                distance = distance / 2f;
                 var duration = Egg.DurationToPosition(distance);
 
                 var axis = e.DirectionData.Axis;
