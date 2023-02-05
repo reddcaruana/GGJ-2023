@@ -21,7 +21,11 @@ namespace Assets.Scripts.game.grabbers
 
         public void PassTo(DirectionData directionData)
         {
-            if (!HasEgg) return;
+            if (!HasEgg)
+            {
+                View.Woble(directionData);
+                return;
+            }
 
             if (!TryFindOtherGrabber(directionData, out Grabber grabber))
             {
