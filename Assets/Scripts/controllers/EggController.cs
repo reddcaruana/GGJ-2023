@@ -88,6 +88,8 @@ namespace Assets.Scripts.controllers
 
         public static bool CheckForCollision(Egg egg)
         {
+            if (egg.IsDelivering) return false;
+
             for (int i = 0; i < eggs.Count; i++)
             {
                 var e = eggs[i];

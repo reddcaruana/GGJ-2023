@@ -3,22 +3,23 @@ using Assets.Scripts.game.eggs;
 using Assets.Scripts.controllers;
 using Assets.Scripts.game.grabbers.data;
 using Assets.Scripts.game.dispenser.view;
-using Assets.Scripts.game.stork;
+using Assets.Scripts.game.grabbers;
 
 namespace Assets.Scripts.game.dispenser
 {
     public class Dispenser
     {
-
         private PassToGrabberData passToGrabber;
         private DispensorView view;
+
+        public MotherGrabber MotherOnSameSide { get; private set; }
 
         private bool HasEgg => egg != null;
         private Egg egg;
 
         public Dispenser() => DispensorController.Add(this);
 
-        public void Set(PassToGrabberData passToGrabber) => this.passToGrabber = passToGrabber;
+        public void Set(PassToGrabberData passToGrabber, MotherGrabber motherOnSameSide) => this.passToGrabber = passToGrabber;
 
         public void CreateView(Transform parent)
         {

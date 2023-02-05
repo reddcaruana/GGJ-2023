@@ -45,8 +45,6 @@ namespace Assets.Scripts.game.level
 
         private void Dispense(int count)
         {
-            Debug.Log("*-* Dispensing: " + count);
-
             count -= EggController.ActiveCount();
             if (count == 0) return;
 
@@ -54,8 +52,8 @@ namespace Assets.Scripts.game.level
             if (eggs.Length == 0)
                 return;
 
-            var mothers = MotherController.GetAvailableRandom(eggs.Length);
             var dispensers = DispensorController.GetAvailableRandom(eggs.Length);
+            var mothers = MotherController.GetAvailableRandom(eggs.Length, dispensers);
 
             if (dispensers.Length != eggs.Length || mothers.Length != eggs.Length)
                 Debug.LogError($"[LevelManager] Dispenser: {dispensers.Length}, Egg: {eggs.Length}, and Mothers {mothers.Length} Count do not match.");
@@ -66,7 +64,6 @@ namespace Assets.Scripts.game.level
 
         private void DispenseInternal(Dispenser dispenser, Egg egg, MotherGrabber mother)
         {
-            mother.SetSpriteData(egg.Data);
             egg.SetMother(mother);
             dispenser.SetEgg(egg);
             dispenser.Pass();
@@ -122,7 +119,7 @@ namespace Assets.Scripts.game.level
             var parent = transform.Find("Grabbers/" + parentName);
             var view = Instantiate(prefab, parent).AddComponent<GrabberView>();
             view.name = parentName + "View";
-            grabber.SetView(view);
+            grabber.SetView(view, 1);
             grabber.SetSpriteData(spriteData);
         }
         private void SetMotherViews()
@@ -144,17 +141,17 @@ namespace Assets.Scripts.game.level
             var parent = transform.Find("Mothers/" + parentName);
             var view = Instantiate(prefab, parent).AddComponent<GrabberView>();
             view.name = parentName + "View";
-            grabber.SetView(view);
+            grabber.SetView(view, 2);
             grabber.SetPositionType(posType);
             grabber.SetSpriteData(EggData.NoEgg);
         }
 
         private void SetDispensers()
         {
-            dispenser0.Set(new PassToGrabberData(DirectionData.Left, grabber0));
-            dispenser1.Set(new PassToGrabberData(DirectionData.Right, grabber1));
-            dispenser2.Set(new PassToGrabberData(DirectionData.Right, grabber2));
-            dispenser3.Set(new PassToGrabberData(DirectionData.Left, grabber3));
+            dispenser0.Set(new PassToGrabberData(DirectionData.Left, grabber0), motherGrabber0);
+            dispenser1.Set(new PassToGrabberData(DirectionData.Right, grabber1), motherGrabber3);
+            dispenser2.Set(new PassToGrabberData(DirectionData.Right, grabber2), motherGrabber4);
+            dispenser3.Set(new PassToGrabberData(DirectionData.Left, grabber3), motherGrabber7);
         }
 
         private void SetDispensorView()
