@@ -5,6 +5,8 @@ using Assets.Scripts.game.eggs.data;
 using Assets.Scripts.game.grabbers.views;
 using System.Runtime.InteropServices;
 using System;
+using Assets.Scripts.utils;
+using System.Collections;
 
 namespace Assets.Scripts.controllers
 {
@@ -88,8 +90,6 @@ namespace Assets.Scripts.controllers
 
         public static bool CheckForCollision(Egg egg)
         {
-            if (egg.IsDelivering) return false;
-
             for (int i = 0; i < eggs.Count; i++)
             {
                 var e = eggs[i];

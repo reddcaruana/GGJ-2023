@@ -2,11 +2,11 @@
 using DG.Tweening;
 using UnityEngine;
 using Assets.Scripts.statics;
+using Assets.Scripts.game.stork;
 using Assets.Scripts.game.grabbers;
 using Assets.Scripts.game.eggs.data;
 using Assets.Scripts.game.eggs.views;
 using Assets.Scripts.game.directions.data;
-using Assets.Scripts.game.stork;
 
 namespace Assets.Scripts.game.eggs
 {
@@ -19,7 +19,6 @@ namespace Assets.Scripts.game.eggs
         public MotherGrabber Mother { get; private set; }
         public bool IsSpawned { get; private set; }
         public bool IsActive { get; private set; }
-        public bool IsDelivering { get; private set; }
 
         public DirectionData DirectionData { get; private set; }
         private Vector3 from;
@@ -54,6 +53,7 @@ namespace Assets.Scripts.game.eggs
         public void Break()
         {
             IsActive = false;
+
             Mother.EggBroken();
             view.Break(Data.SpriteData.GetBadSprite(), Despawn);
         }
@@ -78,7 +78,6 @@ namespace Assets.Scripts.game.eggs
 
         public void Dispense(DirectionData directionData, Vector3 from, Vector3 to, Action<Egg> arrivedCallback)
         {
-            IsDelivering = true;
             var duration = DurationToDispose(Vector2.Distance(from, to));
             var stork = Stork.GetStork();
             stork.Deliver(from, to, duration);
@@ -86,7 +85,6 @@ namespace Assets.Scripts.game.eggs
 
             void OnComplete(Egg egg)
             {
-                IsDelivering = false;
                 Mother.SetSpriteData(egg.Data);
                 arrivedCallback(egg);
             }
