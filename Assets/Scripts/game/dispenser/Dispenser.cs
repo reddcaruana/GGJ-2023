@@ -3,6 +3,7 @@ using Assets.Scripts.game.eggs;
 using Assets.Scripts.controllers;
 using Assets.Scripts.game.grabbers.data;
 using Assets.Scripts.game.dispenser.view;
+using Assets.Scripts.game.stork;
 
 namespace Assets.Scripts.game.dispenser
 {
