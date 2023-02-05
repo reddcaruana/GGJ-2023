@@ -26,6 +26,7 @@ namespace Assets.Scripts.game.eggs
         private Vector3 to;
 
         private EggView view;
+        public bool IsDelivery { get; private set; }
 
         public void Set(EggData data) => Data = data;
         public void SetMother(MotherGrabber mother) => Mother = mother;
@@ -85,6 +86,7 @@ namespace Assets.Scripts.game.eggs
 
         public void Dispense(DirectionData directionData, Vector3 from, Vector3 to, Action<Egg> arrivedCallback)
         {
+            IsDelivery = true;
             var duration = DurationToDispose(Vector2.Distance(from, to));
             var stork = Stork.GetStork();
             stork.Deliver(from, to, duration);
@@ -92,6 +94,7 @@ namespace Assets.Scripts.game.eggs
 
             void OnComplete(Egg egg)
             {
+                IsDelivery = false;
                 Mother.SetSpriteData(egg.Data);
                 arrivedCallback(egg);
             }
