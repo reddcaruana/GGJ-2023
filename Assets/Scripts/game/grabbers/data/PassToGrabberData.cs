@@ -1,13 +1,15 @@
-﻿namespace Assets.Scripts.game.grabbers.data
+﻿using Assets.Scripts.game.directions.data;
+
+namespace Assets.Scripts.game.grabbers.data
 {
     public class PassToGrabberData
     {
-        public readonly DirectionType Direction;
+        public readonly DirectionData DirectionData;
         public readonly Grabber Grabber;
 
-        public PassToGrabberData(DirectionType direction, Grabber grabber)
+        public PassToGrabberData(DirectionData directionData, Grabber grabber)
         {
-            Direction = direction;
+            DirectionData = directionData;
             Grabber = grabber;
         }
     }

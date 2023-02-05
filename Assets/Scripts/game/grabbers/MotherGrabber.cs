@@ -1,6 +1,5 @@
 ﻿using Assets.Scripts.game.eggs;
 using Assets.Scripts.controllers;
-using System.Collections.Generic;
 using Assets.Scripts.game.eggs.data;
 
 namespace Assets.Scripts.game.grabbers
@@ -8,22 +7,21 @@ namespace Assets.Scripts.game.grabbers
     public class MotherGrabber : Grabber
     {
         public enum PositionAlignmentType { BottomRightRight, BottomRight, BottomLeft, BottomLeftLeft, UpperLeftLeft, UpperLeft, UpperRight, UpperRightRight }
-        private static List<MotherGrabber> mothers = new List<MotherGrabber>();
 
-        public bool IsActive => !EggData.NoEgg.Compare(eggId);
-        private int eggId;
+        public bool IsActive => !EggData.NoEgg.Compare(expectedEggId);
+        private int expectedEggId;
 
-        public MotherGrabber() => mothers.Add(this);
+        public MotherGrabber() => MotherController.Add(this);
 
         public void SetSpriteData(EggData eggData)
         {
-            eggId = eggData.Id;
+            expectedEggId = eggData.Id;
 
             if (IsActive)
             {
                 spriteData = eggData.GetMotherSprite();
-                View.SetIdle(spriteData.GetIdleSprite());
-                View.Enter();
+                View.Enter(spriteData.GetFallingSprite(), OnEnetered);
+                void OnEnetered() => View.SetIdle(spriteData.GetIdleSprite());
             }
             else
                 Leave();
@@ -52,10 +50,11 @@ namespace Assets.Scripts.game.grabbers
         {
             this.egg = egg;
 
-            if (egg.Data.Id == eggId) 
+            if (egg.Data.Id == expectedEggId) 
             {
                 ScoreController.IncrimentScore(egg.Data.Id);
-                this.egg.Despawn();
+                this.egg.ArrivedToMother();
+                this.egg = null;
                 Leave();
             }
             else
@@ -67,22 +66,15 @@ namespace Assets.Scripts.game.grabbers
 
         public void Leave()
         {
-            eggId = EggData.NoEgg.Id;
-            View.Exit();
-        }
+            if (spriteData == null)
+            {
+                View.ExitNoAnim();
+                Continue();
+            }
+            else
+                View.Exit(spriteData.GetFallingSprite(), Continue);
 
-        public static bool TryGetAvailableMother(out MotherGrabber mother)
-        {
-            mother = GetAvailableMother();
-            return mother != null;
-        }
-
-        public static MotherGrabber GetAvailableMother()
-        {
-            for (int i = 0; i < mothers.Count; i++)
-                if (!mothers[i].IsActive)
-                    return mothers[i];
-            return null;
+            void Continue() => expectedEggId = EggData.NoEgg.Id;
         }
     }
 }

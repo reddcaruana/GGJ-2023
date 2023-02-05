@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using Assets.Scripts.game.eggs;
-using System.Collections.Generic;
-using Assets.Scripts.game.eggs.data;
+using Assets.Scripts.controllers;
 using Assets.Scripts.game.grabbers.data;
 using Assets.Scripts.game.dispenser.view;
 
@@ -9,7 +8,6 @@ namespace Assets.Scripts.game.dispenser
 {
     public class Dispenser
     {
-        private static readonly List<Dispenser> dispensors = new List<Dispenser>();
 
         private PassToGrabberData passToGrabber;
         private DispensorView view;
@@ -17,7 +15,7 @@ namespace Assets.Scripts.game.dispenser
         private bool HasEgg => egg != null;
         private Egg egg;
 
-        public Dispenser() => dispensors.Add(this);
+        public Dispenser() => DispensorController.Add(this);
 
         public void Set(PassToGrabberData passToGrabber) => this.passToGrabber = passToGrabber;
 
@@ -44,28 +42,8 @@ namespace Assets.Scripts.game.dispenser
             }
 
             var grabber = passToGrabber.Grabber;
-            egg.Dispense(passToGrabber.Direction, view.transform.position, grabber.GetPosition(), grabber.Receive);
+            egg.Dispense(passToGrabber.DirectionData, view.transform.position, grabber.GetPosition(), grabber.Receive);
             egg = null;
-        }
-
-        public static Dispenser[] GetAvailableRandom(int count)
-        {
-            var result = new List<Dispenser>();
-
-            const int FAIL_SAFE = 100;
-            int i = 0;
-            do
-            {
-                var d = dispensors[Random.Range(0, dispensors.Count)];
-                if (!result.Contains(d))
-                {
-                    result.Add(d);
-                    i++;
-                }
-            } while (i < count && i < FAIL_SAFE);
-
-            Debug.Log($"*-* Count: {count}, I: {i}");
-            return result.ToArray();
         }
     }
 }

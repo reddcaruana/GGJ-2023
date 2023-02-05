@@ -2,13 +2,17 @@
 using UnityEngine;
 using DG.Tweening;
 using Assets.Scripts.utils;
+using Assets.Scripts.controllers;
+using Assets.Scripts.game.directions.data;
 
 namespace Assets.Scripts.game.grabbers.views
 {
     public class GrabberView : SpriteObject
     {
-        private Tweener tweener;
+        public static readonly Vector3 VECTOR3_ONE = Vector3.one;
+        public static readonly Vector3 SCALE_FLIP_RIGHT = new Vector3(-1f, 1, 1f);
 
+        private Tweener tweener;
         public void CenterSprite()
         {
             var loaclPos = SpriteRenderer.transform.localPosition;
@@ -21,7 +25,7 @@ namespace Assets.Scripts.game.grabbers.views
         public void SetIdle(Sprite sprite)
         {
             SpriteRenderer.sprite = sprite;
-            killAnimation();
+            KillAnimation();
             StartIdelAnimation();
         }
 
@@ -40,20 +44,21 @@ namespace Assets.Scripts.game.grabbers.views
             }
         }
 
-        public void SetReceive(Sprite sprite, DirectionType directionType, Action onComplete = null)
+        public void SetReceive(Sprite sprite, DirectionData directionData, Action onComplete = null)
         {
             SpriteRenderer.sprite = sprite;
-            killAnimation();
-            StartReciveAnimation(directionType, onComplete);
+            KillAnimation();
+            //StartReciveAnimation(directionData, onComplete);
+            onComplete?.Invoke();
         }
 
-        private void StartReciveAnimation(DirectionType directionType, Action onComplete)
+        private void StartReciveAnimation(DirectionData directionData, Action onComplete)
         {
             const float endValue = 0.5f;
             const float duration = 0.8f;
 
-            (int axis, int direction) = GetAxisAndDirection(directionType);
-
+            var axis = directionData.Axis;
+            var direction = directionData.DirectionMultiplier;
             tweener = AnimationUtils.Update(duration, OnUpdate, onComplete: OnComplete, loop: 2);
 
             void OnUpdate(float f)
@@ -70,16 +75,21 @@ namespace Assets.Scripts.game.grabbers.views
             }
         }
 
-        public void SetPass(Sprite sprite, DirectionType directionType, Action onComplete)
+        public void SetPass(Sprite sprite, DirectionData directionData, Action onComplete)
         {
             SpriteRenderer.sprite = sprite;
-            StartPassAnimation(directionType, onComplete);
+            StartPassAnimation(directionData, onComplete);
         }
 
-        private void StartPassAnimation(DirectionType directionType, Action onComplete)
+        private void StartPassAnimation(DirectionData directionData, Action onComplete)
         {
-            const float endValue = 0.5f;
-            const float duration = 0.8f;
+            const float endValue = 1.1f;
+            const float duration = 0.2f;
+
+            if (directionData.Compare(DirectionData.Right))
+                transform.localScale = SCALE_FLIP_RIGHT;
+            else
+                transform.rotation = directionData.Quaternion;
 
             tweener = SpriteRenderer.transform.
                 DOScaleX(endValue, duration).
@@ -89,6 +99,7 @@ namespace Assets.Scripts.game.grabbers.views
 
             void OnComplete()
             {
+                ResetTransforms();
                 tweener = null;
                 onComplete?.Invoke();
             }
@@ -100,36 +111,71 @@ namespace Assets.Scripts.game.grabbers.views
             CoroutineRunner.ME.Wait(0.5f, onComplete);
         }
 
-        public Vector3 GetEggAttachmentPosition() => transform.Find("EggAttachment").position;
-
-        public static (int, int) GetAxisAndDirection(DirectionType directionType)
+        public void Enter(Sprite sprite, Action onComlete)
         {
-            switch (directionType)
+            Debug.Log("*-* Enter");
+            gameObject.SetActive(true);
+            SpriteRenderer.sprite = sprite;
+
+            KillAnimation();
+            const float duration = 0.3f;
+
+            var targetPos = transform.position;
+            var startPos = targetPos;
+            startPos.y += ViewController.SizY + SpriteRenderer.bounds.size.y;
+            tweener = transform.
+                DOMove(targetPos, duration).
+                From(startPos).
+                SetEase(Ease.OutQuad).
+                OnComplete(OnComplete);
+
+            void OnComplete()
             {
-                case DirectionType.Left: return (0, -1);
-                case DirectionType.Right: return (0, 1);
-                case DirectionType.Up: return (1, 1);
-                case DirectionType.Down: return (1, -1);
-                default: Debug.LogError("[GrabberView] Unable to find Direction: " + directionType);
-                    return (0, 0);
+                tweener = null;
+                onComlete?.Invoke();
             }
         }
 
-        private void killAnimation() 
+        public void ExitNoAnim() => gameObject.SetActive(false);
+
+        public void Exit(Sprite sprite, Action onComlete)
+        {
+            Debug.Log("*-* Exit");
+
+            SpriteRenderer.sprite = sprite;
+
+            const float duration = 0.3f;
+
+            var startPos = transform.position;
+            var targetPos = startPos;
+            targetPos.y -= ViewController.SizY + SpriteRenderer.bounds.size.y;
+            tweener = transform.
+                DOMove(targetPos, duration).
+                From(startPos).
+                SetEase(Ease.InBack).
+                OnComplete(OnComplete);
+
+            void OnComplete()
+            {
+                gameObject.SetActive(false);
+                tweener = null;
+                onComlete?.Invoke();
+            }
+        }
+
+        public Vector3 GetEggAttachmentPosition() => transform.Find("EggAttachment").position;
+
+        private void ResetTransforms()
+        {
+            transform.localScale = VECTOR3_ONE;
+            transform.rotation = Quaternion.identity;
+        }
+
+        private void KillAnimation() 
         { 
             tweener?.Kill();
             tweener =  null;
-            SpriteRenderer.transform.localScale = Vector3.one;
-        }
-
-        public void Exit()
-        {
-            gameObject.SetActive(false);
-        }
-
-        public void Enter()
-        {
-            gameObject.SetActive(true);
-        }
+            ResetTransforms();
+        }        
     }
 }

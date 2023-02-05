@@ -6,6 +6,7 @@ using Assets.Scripts.game.dispenser;
 using Assets.Scripts.game.eggs.data;
 using Assets.Scripts.game.grabbers.data;
 using Assets.Scripts.game.grabbers.views;
+using Assets.Scripts.game.directions.data;
 using static Assets.Scripts.game.grabbers.MotherGrabber;
 
 namespace Assets.Scripts.game.level
@@ -44,62 +45,65 @@ namespace Assets.Scripts.game.level
 
         private void Dispense(int count)
         {
-            count -= EggManager.ActiveCount();
+            Debug.Log("*-* Dispensing: " + count);
 
-            var dispensers = Dispenser.GetAvailableRandom(count);
-            var eggs = EggManager.GetAvailable(count);
+            count -= EggController.ActiveCount();
+            if (count == 0) return;
+
+            var eggs = EggController.GetAvailable(count);
+            if (eggs.Length == 0)
+                return;
+
+            var mothers = MotherController.GetAvailableRandom(eggs.Length);
+            var dispensers = DispensorController.GetAvailableRandom(eggs.Length);
+
+            if (dispensers.Length !=  eggs.Length)
+                Debug.LogError($"[LevelManager] Dispenser and Egg Count do not match: {dispensers.Length} vs {eggs.Length}");
 
             for (int i = 0; i < dispensers.Length; i++)
-                DispenseInternal(dispensers[i], eggs[i]);
+                DispenseInternal(dispensers[i], eggs[i], mothers[i]);
         }
 
-        private void DispenseInternal(Dispenser dispenser, Egg egg)
+        private void DispenseInternal(Dispenser dispenser, Egg egg, MotherGrabber mother)
         {
-            if (!TryGetAvailableMother(out MotherGrabber mother))
-            {
-                Debug.LogError("[LevelManager] No Mother Was Available");
-                return;
-            }
-
-            dispenser.SetEgg(egg);
-            egg.SetMother(mother);
-            dispenser.Pass();
-
             mother.SetSpriteData(egg.Data);
+            egg.SetMother(mother);
+            dispenser.SetEgg(egg);
+            dispenser.Pass();
         }
 
         private void SetGrabbers()
         {
             grabber0.Set(new[]
             {
-                new PassToGrabberData(DirectionType.Left, grabber1),
-                new PassToGrabberData(DirectionType.Up, grabber3),
-                new PassToGrabberData(DirectionType.Right, motherGrabber0),
-                new PassToGrabberData(DirectionType.Down, motherGrabber1)
+                new PassToGrabberData(DirectionData.Left, grabber1),
+                new PassToGrabberData(DirectionData.Up, grabber3),
+                new PassToGrabberData(DirectionData.Right, motherGrabber0),
+                new PassToGrabberData(DirectionData.Down, motherGrabber1)
             });
 
             grabber1.Set(new[]
             {
-                new PassToGrabberData(DirectionType.Up, grabber2),
-                new PassToGrabberData(DirectionType.Right, grabber0),
-                new PassToGrabberData(DirectionType.Down, motherGrabber2),
-                new PassToGrabberData(DirectionType.Left, motherGrabber3)
+                new PassToGrabberData(DirectionData.Up, grabber2),
+                new PassToGrabberData(DirectionData.Right, grabber0),
+                new PassToGrabberData(DirectionData.Down, motherGrabber2),
+                new PassToGrabberData(DirectionData.Left, motherGrabber3)
             });
 
             grabber2.Set(new[]
             {
-                new PassToGrabberData(DirectionType.Down, grabber1),
-                new PassToGrabberData(DirectionType.Right, grabber3),
-                new PassToGrabberData(DirectionType.Left, motherGrabber4),
-                new PassToGrabberData(DirectionType.Up, motherGrabber5)
+                new PassToGrabberData(DirectionData.Down, grabber1),
+                new PassToGrabberData(DirectionData.Right, grabber3),
+                new PassToGrabberData(DirectionData.Left, motherGrabber4),
+                new PassToGrabberData(DirectionData.Up, motherGrabber5)
             });
 
             grabber3.Set(new[]
             {
-                new PassToGrabberData(DirectionType.Down, grabber0),
-                new PassToGrabberData(DirectionType.Left, grabber2),
-                new PassToGrabberData(DirectionType.Up, motherGrabber6),
-                new PassToGrabberData(DirectionType.Right, motherGrabber7)
+                new PassToGrabberData(DirectionData.Down, grabber0),
+                new PassToGrabberData(DirectionData.Left, grabber2),
+                new PassToGrabberData(DirectionData.Up, motherGrabber6),
+                new PassToGrabberData(DirectionData.Right, motherGrabber7)
             });
         }
 
@@ -107,10 +111,10 @@ namespace Assets.Scripts.game.level
         {
             var prefab = Resources.Load<GameObject>("Prefabs/Grabbers/GrabberView");
 
-            SetGrabberView(prefab, grabber0, "Grabber0", GrabberSpriteData.BirdRed);
-            SetGrabberView(prefab, grabber1, "Grabber1", GrabberSpriteData.BirdBlue);
-            SetGrabberView(prefab, grabber2, "Grabber2", GrabberSpriteData.BirdGreen);
-            SetGrabberView(prefab, grabber3, "Grabber3", GrabberSpriteData.BirdYellow);
+            SetGrabberView(prefab, grabber0, "Grabber0", GrabberSpriteData.BirdBlue);
+            SetGrabberView(prefab, grabber1, "Grabber1", GrabberSpriteData.BirdGreen);
+            SetGrabberView(prefab, grabber2, "Grabber2", GrabberSpriteData.BirdRed);
+            SetGrabberView(prefab, grabber3, "Grabber3", GrabberSpriteData.BirdPurple);
         }
 
         private void SetGrabberView(GameObject prefab, PlayerGrabber grabber, string parentName, GrabberSpriteData spriteData)
@@ -141,16 +145,16 @@ namespace Assets.Scripts.game.level
             var view = Instantiate(prefab, parent).AddComponent<GrabberView>();
             view.name = parentName + "View";
             grabber.SetView(view);
-            grabber.FixPosition(posType);
+            //grabber.FixPosition(posType);
             grabber.SetSpriteData(EggData.NoEgg);
         }
 
         private void SetDispensers()
         {
-            dispenser0.Set(new PassToGrabberData(DirectionType.Left, grabber0));
-            dispenser1.Set(new PassToGrabberData(DirectionType.Right, grabber1));
-            dispenser2.Set(new PassToGrabberData(DirectionType.Right, grabber2));
-            dispenser3.Set(new PassToGrabberData(DirectionType.Left, grabber3));
+            dispenser0.Set(new PassToGrabberData(DirectionData.Left, grabber0));
+            dispenser1.Set(new PassToGrabberData(DirectionData.Right, grabber1));
+            dispenser2.Set(new PassToGrabberData(DirectionData.Right, grabber2));
+            dispenser3.Set(new PassToGrabberData(DirectionData.Left, grabber3));
         }
 
         private void SetDispensorView()
@@ -167,14 +171,14 @@ namespace Assets.Scripts.game.level
             }
         }
 
-        public void OnPlayerInput(int playerId, DirectionType directionType)
+        public void OnPlayerInput(int playerId, DirectionData directionData)
         {
             switch (playerId)
             {
-                case 0: grabber0.PassTo(directionType); break;
-                case 1: grabber1.PassTo(directionType); break;
-                case 2: grabber2.PassTo(directionType); break;
-                case 3: grabber3.PassTo(directionType); break;
+                case 0: grabber0.PassTo(directionData); break;
+                case 1: grabber1.PassTo(directionData); break;
+                case 2: grabber2.PassTo(directionData); break;
+                case 3: grabber3.PassTo(directionData); break;
             }                
         }
     }

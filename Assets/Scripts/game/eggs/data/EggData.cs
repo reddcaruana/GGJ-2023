@@ -9,26 +9,26 @@ namespace Assets.Scripts.game.eggs.data
         private static readonly List<EggData> eggs = new List<EggData>();
         public static int Count => eggs.Count;
 
-        public static readonly EggData NoEgg = new EggData("NUll");
-        public static readonly EggData EggRed = new EggData("EggRed");
-        public static readonly EggData EggBlue = new EggData("EggBlue");
-        public static readonly EggData EggGreen = new EggData("EggGreen");
-        public static readonly EggData EggYellow = new EggData("EggYellow");
+        public static readonly EggData NoEgg = new EggData("NUll", null);
+        public static readonly EggData EggRed = new EggData("EggRed", EggSpriteData.EggRed);
+        public static readonly EggData EggBlue = new EggData("EggBlue", EggSpriteData.EggBlue);
+        public static readonly EggData EggGreen = new EggData("EggGreen", EggSpriteData.EggGreen);
+        public static readonly EggData EggYellow = new EggData("EggYellow", EggSpriteData.EggPurple);
 
-        public int Id;
-        public string Alias;
+        public readonly int Id;
+        public readonly string Alias;
+        public readonly EggSpriteData SpriteData;
 
 
-        public EggData(string alias)
+        public EggData(string alias, EggSpriteData spriteData)
         {
             Id = eggs.Count;
             Alias = alias;
+            SpriteData = spriteData;
             eggs.Add(this);
         }
 
         public bool Compare(int id) => Id == id;
-
-        public Sprite GetSprite() => Resources.Load<Sprite>("Sprites/Eggs/" + Alias);
 
         public GrabberSpriteData GetMotherSprite() => GrabberSpriteData.GetMotherSpriteData(Id);
 
