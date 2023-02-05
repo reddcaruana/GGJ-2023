@@ -13,13 +13,15 @@ namespace Assets.Scripts.game.grabbers.views
         public static readonly Vector3 VECTOR3_ONE = Vector3.one;
         public static readonly Vector3 SCALE_FLIP_RIGHT = new Vector3(-1f, 1, 1f);
 
+        private Vector2 localPos;
         private PositionAlignmentType positionType;
         private Tweener tweener;
         public void CenterSprite()
         {
-            var loaclPos = SpriteRenderer.transform.localPosition;
-            loaclPos.y -= SpriteRenderer.bounds.size.y / 2f;
-            SpriteRenderer.transform.localPosition = loaclPos;
+            localPos = SpriteRenderer.transform.localPosition;
+            localPos.y -= SpriteRenderer.bounds.size.y / 2f;
+
+            SpriteRenderer.transform.localPosition = localPos;
         }
 
         public void SetPositionType(PositionAlignmentType positionType) => this.positionType = positionType;
@@ -198,10 +200,28 @@ namespace Assets.Scripts.game.grabbers.views
             CoroutineRunner.ME.Wait(1f, onComlpete);
         }
 
+        public void Woble(DirectionData directionData)
+        {
+            KillAnimation();
+
+            const float duration = 0.1f;
+            Vector3 target = transform.position;
+            target[directionData.Axis] = 1f * directionData.DirectionMultiplier;
+            tweener = transform.
+                DOMove(target, duration).
+                SetEase(Ease.InOutQuad).
+                SetLoops(2, LoopType.Yoyo).
+                OnComplete(OnComplete);
+
+            void OnComplete() => tweener = null;
+        }
+
         public Vector3 GetEggAttachmentPosition() => transform.Find("EggAttachment").position;
+
 
         private void ResetTransforms()
         {
+            transform.localPosition = localPos;
             transform.localScale = VECTOR3_ONE;
             transform.rotation = Quaternion.identity;
         }
@@ -212,5 +232,6 @@ namespace Assets.Scripts.game.grabbers.views
             tweener =  null;
             ResetTransforms();
         }
+
     }
 }
