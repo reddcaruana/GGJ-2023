@@ -209,6 +209,7 @@ namespace Assets.Scripts.game.grabbers.views
             if (!isIdle) return;
 
             const float duration = 0.1f;
+            ResetTransforms();
             Vector3 target = SpriteRenderer.transform.position;
             target[directionData.Axis] += 0.1f * directionData.DirectionMultiplier;
             tweener = SpriteRenderer.transform.
