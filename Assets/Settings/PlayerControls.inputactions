@@ -47,6 +47,17 @@
                 },
                 {
                     "name": "",
+                    "id": "2eae49d3-d7b3-41b4-898b-93967df509c2",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Confirm",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "c76646b7-583e-4254-948e-15035b00f5c6",
                     "path": "<HID::usb gamepad           >/button3",
                     "interactions": "",
@@ -58,8 +69,41 @@
                 },
                 {
                     "name": "",
+                    "id": "9bdc321a-afef-457f-b6ec-33439f15d302",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Cancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "be96996b-afbf-4ec2-8072-efc6209e8b35",
                     "path": "<HID::usb gamepad           >/stick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "282eadb5-58a9-4651-b258-5eb8324a360c",
+                    "path": "<Gamepad>/dpad",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f75d2d2c-2895-4184-8df7-6322cedc8d4a",
+                    "path": "<Gamepad>/leftStick",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -135,6 +179,28 @@
                 },
                 {
                     "name": "",
+                    "id": "d991de4f-7f00-49f1-a28f-7a9d9c6c2110",
+                    "path": "<Gamepad>/dpad/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Left",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a03e55a8-e352-4eb2-9af6-8843497e3bc3",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Left",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "bc6aa98e-f4cd-4954-b793-be9dc0793eb1",
                     "path": "<Joystick>/stick/right",
                     "interactions": "",
@@ -148,6 +214,28 @@
                     "name": "",
                     "id": "0f11e43e-c6b1-4f40-93d0-2d5e954205aa",
                     "path": "<HID::usb gamepad           >/button2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Right",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "54a3b318-a12e-4c68-990e-c723809c7e6c",
+                    "path": "<Gamepad>/dpad/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Right",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e66f0f39-ae3c-487b-843a-451dfe322a69",
+                    "path": "<Gamepad>/buttonEast",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -179,6 +267,28 @@
                 },
                 {
                     "name": "",
+                    "id": "83485942-eced-4514-b58e-bb67fd0238c2",
+                    "path": "<Gamepad>/dpad/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Up",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "096a2936-9576-474f-9495-7ca38612ffca",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Up",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "0baf4027-df2e-48a6-83b7-b5c79ec6d389",
                     "path": "<Joystick>/stick/down",
                     "interactions": "",
@@ -198,78 +308,28 @@
                     "action": "Down",
                     "isComposite": false,
                     "isPartOfComposite": false
-                }
-            ]
-        },
-        {
-            "name": "Leaderboard",
-            "id": "eda4ae2a-4cb0-49d5-a2e6-c6d4b00b0059",
-            "actions": [
+                },
                 {
-                    "name": "Select",
-                    "type": "Value",
-                    "id": "fc8bc570-44c6-4518-90dd-4327396ac47f",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "Press",
-                    "initialStateCheck": true
-                }
-            ],
-            "bindings": [
-                {
-                    "name": "2D Vector",
-                    "id": "2bd9c901-ae44-4096-8c2a-3b5123f7b63c",
-                    "path": "2DVector",
+                    "name": "",
+                    "id": "e4e1374a-4611-4a4d-a2f2-9b16a30d17f9",
+                    "path": "<Gamepad>/leftStick/down",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Select",
-                    "isComposite": true,
+                    "action": "Down",
+                    "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "up",
-                    "id": "9fb84283-0ef1-479d-999a-a0ff5b43cbb7",
-                    "path": "<HID::usb gamepad           >/trigger",
+                    "name": "",
+                    "id": "3784cb1c-4f8b-4c30-a442-2c65648e09ac",
+                    "path": "<Gamepad>/buttonSouth",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Select",
+                    "action": "Down",
                     "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "down",
-                    "id": "65d6ff1e-c39f-4a0b-9da2-94505aa8fd65",
-                    "path": "<HID::usb gamepad           >/button3",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Select",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "left",
-                    "id": "63d2a4c6-b180-47b9-b879-1d51fdc89bbf",
-                    "path": "<HID::usb gamepad           >/button4",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Select",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "right",
-                    "id": "ac2d40ca-c6e7-445f-8abe-2f157b48e109",
-                    "path": "<HID::usb gamepad           >/button2",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Select",
-                    "isComposite": false,
-                    "isPartOfComposite": true
+                    "isPartOfComposite": false
                 }
             ]
         }
