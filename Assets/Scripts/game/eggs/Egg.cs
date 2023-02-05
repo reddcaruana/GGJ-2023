@@ -19,6 +19,7 @@ namespace Assets.Scripts.game.eggs
         public MotherGrabber Mother { get; private set; }
         public bool IsSpawned { get; private set; }
         public bool IsActive { get; private set; }
+        public bool IsDelivering { get; private set; }
 
         public DirectionData DirectionData { get; private set; }
         private Vector3 from;
@@ -77,10 +78,18 @@ namespace Assets.Scripts.game.eggs
 
         public void Dispense(DirectionData directionData, Vector3 from, Vector3 to, Action<Egg> arrivedCallback)
         {
+            IsDelivering = true;
             var duration = DurationToDispose(Vector2.Distance(from, to));
             var stork = Stork.GetStork();
             stork.Deliver(from, to, duration);
-            MoveTo(directionData, from, to, duration, arrivedCallback);
+            MoveTo(directionData, from, to, duration, OnComplete);
+
+            void OnComplete(Egg egg)
+            {
+                IsDelivering = false;
+                Mother.SetSpriteData(egg.Data);
+                arrivedCallback(egg);
+            }
         }
 
         public void MoveTo(DirectionData directionData, Vector3 from, Vector3 to, float duration, Action<Egg> arrivedCallback)

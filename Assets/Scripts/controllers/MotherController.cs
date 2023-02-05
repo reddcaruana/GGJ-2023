@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using Assets.Scripts.game.grabbers;
+using Assets.Scripts.game.dispenser;
 
 namespace Assets.Scripts.controllers
 {
@@ -10,7 +11,7 @@ namespace Assets.Scripts.controllers
 
         public static void Add(MotherGrabber mother) => mothers.Add(mother);
 
-        public static MotherGrabber[] GetAvailableRandom(int count)
+        public static MotherGrabber[] GetAvailableRandom(int count, Dispenser[] dispensers)
         {
             var availaible = GetAllAvailable();
             var result = new List<MotherGrabber>();
@@ -21,7 +22,8 @@ namespace Assets.Scripts.controllers
             do
             {
                 var m = availaible[Random.Range(0, availaible.Length)];
-                if (!result.Contains(m))
+
+                if (!result.Contains(m) && !DispenserSpace(dispensers, m))
                 {
                     result.Add(m);
                     ++i;
@@ -33,6 +35,14 @@ namespace Assets.Scripts.controllers
                 Debug.LogError("[MotherController] Was unable to Fetch Random Mother Data... FAIL SAFE");
 
             return result.ToArray();
+        }
+
+        private static bool DispenserSpace(Dispenser[] dispensors, MotherGrabber motrher)
+        {
+            for (int i = 0; i < dispensors.Length; i++)
+                if (dispensors[i].MotherOnSameSide == motrher)
+                    return true;
+            return false;
         }
 
         private static MotherGrabber[] GetAllAvailable()
