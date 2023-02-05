@@ -272,6 +272,7 @@ public class PlayerCursor : BaseControls<PlayerCursor>
     /// </summary>
     private void Raycast()
     {
+        Debug.Log($"{gameObject.name} Raycast");
         PointerEventData data = new PointerEventData(EventSystem.current)
         {
             position = _rectTransform.anchoredPosition * _manager.ScaleFactor
