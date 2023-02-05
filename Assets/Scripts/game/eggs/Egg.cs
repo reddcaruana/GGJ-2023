@@ -7,6 +7,7 @@ using Assets.Scripts.game.grabbers;
 using Assets.Scripts.game.eggs.data;
 using Assets.Scripts.game.eggs.views;
 using Assets.Scripts.game.directions.data;
+using Assets.Scripts.utils;
 
 namespace Assets.Scripts.game.eggs
 {
@@ -56,6 +57,7 @@ namespace Assets.Scripts.game.eggs
 
         public void Break()
         {
+            PauseUtils.TryPause(0.3f);
             IsActive = false;
 
             Mother.EggBroken();

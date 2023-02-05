@@ -26,5 +26,17 @@ namespace Assets.Scripts.utils
             }
             return StartCoroutine(Wait());
         }
+
+        public Coroutine Pause(float value, Action onComplete)
+        {
+            IEnumerator Pause()
+            {
+                Time.timeScale = 0;
+                yield return new WaitForSecondsRealtime(value);
+                Time.timeScale = 1;
+                onComplete?.Invoke();
+            }
+            return StartCoroutine(Pause());
+        }
     }
 }
