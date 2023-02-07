@@ -26,19 +26,26 @@ public class GameLoader : MonoBehaviour
     /// </summary>
     private IEnumerator LoadSceneRoutine()
     {
-        AsyncOperation playerAsync = SceneManager.LoadSceneAsync(playerStorage, LoadSceneMode.Additive);
+        if (SystemInfo.deviceType != DeviceType.Handheld)
+        {
+            AsyncOperation playerAsync = SceneManager.LoadSceneAsync(playerStorage, LoadSceneMode.Additive);
 
-        while (!playerAsync.isDone)
-            yield return null;
+            while (!playerAsync.isDone)
+                yield return null;
 
-        Scene scene = SceneManager.GetSceneByName(playerStorage);
-        SceneManager.MoveGameObjectToScene(playerInputParent, scene);
+            Scene scene = SceneManager.GetSceneByName(playerStorage);
+            SceneManager.MoveGameObjectToScene(playerInputParent, scene);
         
-        AsyncOperation gameAsync = SceneManager.LoadSceneAsync(game, LoadSceneMode.Additive);
+            AsyncOperation gameAsync = SceneManager.LoadSceneAsync(game, LoadSceneMode.Additive);
+                
+            while (!gameAsync.isDone)
+                yield return null;
             
-        while (!gameAsync.isDone)
-            yield return null;
-        
-        SceneManager.UnloadSceneAsync("PlayerLobby");
+            SceneManager.UnloadSceneAsync("PlayerLobby");
+        }
+        else
+        {
+            SceneManager.LoadScene(game);
+        }
     }
 }

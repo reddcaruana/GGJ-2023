@@ -61,6 +61,8 @@ public class LobbyManager : BaseCanvasManager
     /// </summary>
     private void OnDisable()
     {
+        if (SystemInfo.deviceType == DeviceType.Handheld) return;
+        
         _playerInputManager.onPlayerJoined -= RegisterPlayer;
         _playerInputManager.onPlayerLeft -= RemovePlayer;
         
@@ -72,6 +74,8 @@ public class LobbyManager : BaseCanvasManager
     /// </summary>
     private void OnEnable()
     {
+        if (SystemInfo.deviceType == DeviceType.Handheld) return;
+        
         _playerInputManager.onPlayerJoined += RegisterPlayer;
         _playerInputManager.onPlayerLeft += RemovePlayer;
         

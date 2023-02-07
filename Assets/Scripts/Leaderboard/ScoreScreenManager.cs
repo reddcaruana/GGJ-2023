@@ -94,9 +94,12 @@ public class ScoreScreenManager : BaseCanvasManager
     /// </summary>
     public override void Check()
     {
-        string teamName = string.Empty;
-        foreach (LetterInput letter in letterInputs)
-            teamName += letter.Value;
+        string teamName = "YOU";
+        if (SystemInfo.deviceType != DeviceType.Handheld)
+        {
+            foreach (LetterInput letter in letterInputs)
+                teamName += letter.Value;
+        }
 
         ScoreEntry entry = new ScoreEntry(teamName, ScoreController.TotalScore);
         ScoreList.Add(entry);

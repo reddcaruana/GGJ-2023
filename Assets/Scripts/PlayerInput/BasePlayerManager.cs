@@ -13,6 +13,8 @@ public abstract class BasePlayerManager<T> : MonoBehaviour
     /// </summary>
     protected void BindControls()
     {
+        if (SystemInfo.deviceType == DeviceType.Handheld) return;
+        
         PlayerInput[] activePlayers = PlayerInput.all.ToArray();
         Queue<T> controls = new Queue<T>(playerControlledObjects);
 
