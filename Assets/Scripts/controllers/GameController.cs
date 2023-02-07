@@ -28,8 +28,8 @@ public class GameController : MonoBehaviour
 
     private void Update()
     {
-        DebugController.ArrowChecks();
-        DebugController.WASDChecks();
+        // DebugController.ArrowChecks();
+        // DebugController.WASDChecks();
         // DebugController.ArrowChecks(LevelManager.grabber0);
     }
 

@@ -131,7 +131,7 @@ public class ScoreScreenManager : BaseCanvasManager
         }
         catch (Exception e)
         {
-            Debug.LogWarning("Could not read from file.");
+            Debug.LogWarning($"Could not read from file: {e.Message}");
         }
     }
 
@@ -151,7 +151,7 @@ public class ScoreScreenManager : BaseCanvasManager
         }
         catch (Exception e)
         {
-            Debug.LogWarning("Could not save to file.");
+            Debug.LogWarning($"Could not save to file: {e.Message}");
         }
     }
 
