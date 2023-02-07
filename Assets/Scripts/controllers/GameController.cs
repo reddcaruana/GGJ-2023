@@ -1,6 +1,7 @@
 using UnityEngine;
 using Assets.Scripts.game.level;
 using Assets.Scripts.controllers;
+using Assets.Scripts.game.stork;
 
 public class GameController : MonoBehaviour
 {
@@ -12,10 +13,11 @@ public class GameController : MonoBehaviour
     {
         ME = this;
         
-        MotherController.Reset();
-        EggController.Reset();
         DispenserController.Reset();
+        EggController.Reset();
+        MotherController.Reset();
         ScoreController.Reset();
+        Stork.Reset();
         
         ViewController.UpdateData();
         LoadView();

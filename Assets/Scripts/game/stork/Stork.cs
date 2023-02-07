@@ -57,5 +57,10 @@ namespace Assets.Scripts.game.stork
 
             return stork;
         }
+
+        public static void Reset()
+        {
+            storks.Clear();
+        }
     }
 }
