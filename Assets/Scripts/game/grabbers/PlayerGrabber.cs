@@ -23,7 +23,7 @@ namespace Assets.Scripts.game.grabbers
         {
             if (!HasEgg)
             {
-                View.Woble(directionData);
+                View.Wobble(directionData);
                 return;
             }
 

@@ -10,14 +10,14 @@ namespace Assets.Scripts.game.dispenser
     public class Dispenser
     {
         private PassToGrabberData passToGrabber;
-        private DispensorView view;
+        private DispenserView view;
 
         public MotherGrabber MotherOnSameSide { get; private set; }
 
-        private bool HasEgg => egg != null;
+        public bool HasEgg => egg != null;
         private Egg egg;
 
-        public Dispenser() => DispensorController.Add(this);
+        public Dispenser() => DispenserController.Add(this);
 
         public void Set(PassToGrabberData passToGrabber, MotherGrabber motherOnSameSide) => this.passToGrabber = passToGrabber;
 
@@ -30,7 +30,7 @@ namespace Assets.Scripts.game.dispenser
             }
 
             var prefab = Resources.Load<GameObject>("Prefabs/Dispenser/DispenserView");
-            view = MonoBehaviour.Instantiate(prefab, parent).AddComponent<DispensorView>();
+            view = MonoBehaviour.Instantiate(prefab, parent).AddComponent<DispenserView>();
         }
 
         public void SetEgg(Egg egg) => this.egg = egg;

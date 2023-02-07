@@ -7,6 +7,8 @@ using System.Runtime.InteropServices;
 using System;
 using Assets.Scripts.utils;
 using System.Collections;
+using System.Linq;
+using Random = UnityEngine.Random;
 
 namespace Assets.Scripts.controllers
 {
@@ -57,9 +59,8 @@ namespace Assets.Scripts.controllers
 
         private static Egg Find()
         {
-            for (int i = 0; i < eggs.Count; i++)
-                if (!eggs[i].IsSpawned)
-                    return eggs[i];
+            foreach (Egg e in eggs.Where(e => !e.IsSpawned))
+                return e;
 
             var egg = new Egg();
             egg.CreateView(GameController.ME.LevelManager.transform);
@@ -69,33 +70,18 @@ namespace Assets.Scripts.controllers
         }
 
         private static List<EggData> GetDataInUse()
-        {
-            var result = new List<EggData>();
-            for (int i = 0; i < eggs.Count; i++)
-                if (eggs[i].IsSpawned)
-                    result.Add(eggs[i].Data);
-
-            return result;
-        }
+            => (from egg in eggs where egg.IsSpawned select egg.Data).ToList();
 
         public static int ActiveCount()
-        {
-            var count = 0;
-            for (int i = 0; i < eggs.Count; i++)
-                if (eggs[i].IsActive)
-                    ++count;
-
-            return count;
-        }
+            => eggs.Count(t => t.IsActive);
 
         public static bool CheckForCollision(Egg egg)
         {
             if (egg.IsDelivery) return false;
 
-            for (int i = 0; i < eggs.Count; i++)
+            foreach (Egg e in eggs)
             {
-                var e = eggs[i];
-                if (!e.IsSpawned || e.IsDelivery || e == egg || !egg.OnCollisiosnCourse(e)) continue;
+                if (!e.IsSpawned || e.IsDelivery || e == egg || !egg.OnCollisionCourse(e)) continue;
 
                 var egg1Pos = e.GetCurrentPosition();
                 var egg2Pos = egg.GetCurrentPosition();
@@ -112,13 +98,18 @@ namespace Assets.Scripts.controllers
                 direction = egg.DirectionData.DirectionMultiplier;
                 egg2Pos[axis] += distance * direction;
 
-                e.MoveToAndBreack(egg1Pos, duration);
-                egg.MoveToAndBreack(egg2Pos, duration);
+                e.MoveToAndBreak(egg1Pos, duration);
+                egg.MoveToAndBreak(egg2Pos, duration);
 
                 return true;
             }
 
             return false;
+        }
+
+        public static void Reset()
+        {
+            eggs.Clear();
         }
     }
 }

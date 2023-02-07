@@ -22,8 +22,8 @@ namespace Assets.Scripts.game.grabbers
             if (IsActive)
             {
                 spriteData = eggData.GetMotherSprite();
-                View.Enter(spriteData.GetFallingSprite(), OnEnetered);
-                void OnEnetered() => View.SetIdle(spriteData.GetIdleSprite());
+                View.Enter(spriteData.GetFallingSprite(), OnEntered);
+                void OnEntered() => View.SetIdle(spriteData.GetIdleSprite());
             }
             else
             {
@@ -38,7 +38,7 @@ namespace Assets.Scripts.game.grabbers
 
             if (egg.Data.Id == expectedEggId) 
             {
-                ScoreController.IncrimentScore(egg.Data.Id);
+                ScoreController.IncrementScore(egg.Data.Id);
                 this.egg.ArrivedToMother();
                 Happy();
             }

@@ -38,21 +38,21 @@ namespace Assets.Scripts.game.level
             SetGrabbersViews();
             SetMotherViews();
             SetDispensers();
-            SetDispensorView();
+            SetDispenserView();
         }
 
-        public void Dispense() => Dispense(DispensorController.GetDispensCount());
+        public void Dispense() => Dispense(DispenserController.GetDispenseCount());
 
         private void Dispense(int count)
         {
             count -= EggController.ActiveCount();
-            if (count == 0) return;
+            if (count <= 0) return;
 
             var eggs = EggController.GetAvailable(count);
             if (eggs.Length == 0)
                 return;
 
-            var dispensers = DispensorController.GetAvailableRandom(eggs.Length);
+            var dispensers = DispenserController.GetAvailableRandom(eggs.Length);
             var mothers = MotherController.GetAvailableRandom(eggs.Length, dispensers);
 
             if (dispensers.Length != eggs.Length || mothers.Length != eggs.Length)
@@ -154,7 +154,7 @@ namespace Assets.Scripts.game.level
             dispenser3.Set(new PassToGrabberData(DirectionData.Left, grabber3), motherGrabber7);
         }
 
-        private void SetDispensorView()
+        private void SetDispenserView()
         {
             CreateView(dispenser0, 0);
             CreateView(dispenser1, 1);

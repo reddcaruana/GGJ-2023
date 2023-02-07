@@ -39,9 +39,9 @@ namespace Assets.Scripts.controllers
             }
         }
 
-        public static void ArrowCheks() => ArrowCheks(ActiveGrabber[0]);
+        public static void ArrowChecks() => ArrowChecks(ActiveGrabber[0]);
 
-        public static void ArrowCheks(PlayerGrabber grabber)
+        public static void ArrowChecks(PlayerGrabber grabber)
         {
             if (!Automatic && grabber != null)
             {
@@ -60,7 +60,7 @@ namespace Assets.Scripts.controllers
         }
 
 
-        public static void WSADCheks()
+        public static void WASDChecks()
         {
             if (!Automatic && ActiveGrabber[1] != null)
             {

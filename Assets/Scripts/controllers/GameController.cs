@@ -6,12 +6,18 @@ public class GameController : MonoBehaviour
 {
     public static GameController ME;
 
-    public LevelManager LevelManager;
+    public LevelManager LevelManager { get; private set; }
 
     private void Awake()
     {
         ME = this;
-        ViewController.Updatedata();
+        
+        MotherController.Reset();
+        EggController.Reset();
+        DispenserController.Reset();
+        ScoreController.Reset();
+        
+        ViewController.UpdateData();
         LoadView();
     }
 
@@ -22,9 +28,9 @@ public class GameController : MonoBehaviour
 
     private void Update()
     {
-        //DebugController.ArrowCheks();
-        //DebugController.WSADCheks();
-        DebugController.ArrowCheks(LevelManager.grabber0);
+        DebugController.ArrowChecks();
+        DebugController.WASDChecks();
+        // DebugController.ArrowChecks(LevelManager.grabber0);
     }
 
     private void LoadView()

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 using Assets.Scripts.game.grabbers;
 using Assets.Scripts.game.dispenser;
 
@@ -13,7 +14,7 @@ namespace Assets.Scripts.controllers
 
         public static MotherGrabber[] GetAvailableRandom(int count, Dispenser[] dispensers)
         {
-            var availaible = GetAllAvailable();
+            var available = GetAllAvailable();
             var result = new List<MotherGrabber>();
 
             const int FAIL_SAFE = 100;
@@ -21,7 +22,7 @@ namespace Assets.Scripts.controllers
             int i = 0;
             do
             {
-                var m = availaible[Random.Range(0, availaible.Length)];
+                var m = available[Random.Range(0, available.Length)];
 
                 if (!result.Contains(m) && !DispenserSpace(dispensers, m))
                 {
@@ -37,21 +38,15 @@ namespace Assets.Scripts.controllers
             return result.ToArray();
         }
 
-        private static bool DispenserSpace(Dispenser[] dispensors, MotherGrabber motrher)
-        {
-            for (int i = 0; i < dispensors.Length; i++)
-                if (dispensors[i].MotherOnSameSide == motrher)
-                    return true;
-            return false;
-        }
+        private static bool DispenserSpace(Dispenser[] dispensers, MotherGrabber mother)
+            => dispensers.Any(dispenser => dispenser.MotherOnSameSide == mother);
 
         private static MotherGrabber[] GetAllAvailable()
+            => mothers.Where(mother => !mother.IsActive).ToArray();
+
+        public static void Reset()
         {
-            var result = new List<MotherGrabber>();
-            for (int i = 0; i < mothers.Count; i++)
-                if (!mothers[i].IsActive)
-                    result.Add(mothers[i]);
-            return result.ToArray();
+            mothers.Clear();
         }
     }
 }

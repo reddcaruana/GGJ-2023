@@ -7,7 +7,7 @@ namespace Assets.Scripts.controllers
         public static float SizX { get; private set; }
         public static float SizY { get; private set; }
 
-        public static void Updatedata()
+        public static void UpdateData()
         {
             var camera = Camera.main;
             SizY = camera.orthographicSize * 2f;

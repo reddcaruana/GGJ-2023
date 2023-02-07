@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.game.eggs.data;
+﻿using System.Linq;
+using Assets.Scripts.game.eggs.data;
 
 namespace Assets.Scripts.controllers
 {
@@ -6,15 +7,9 @@ namespace Assets.Scripts.controllers
     {
         private static int[] score = new int[EggData.Count];
 
-        public static void IncrimentScore(int eggDataId) => score[eggDataId] += 1;
+        public static void IncrementScore(int eggDataId) => score[eggDataId] += 1;
 
-        public static int TotalScore() 
-        {
-            int total = 0;
-            for (int i = 0; i < score.Length; i++)
-                total += score[i];
-            return total;
-        }
+        public static int TotalScore => score.Sum();
 
         public static void Reset()
         {

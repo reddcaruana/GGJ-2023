@@ -204,7 +204,7 @@ namespace Assets.Scripts.game.grabbers.views
             CoroutineRunner.ME.Wait(1f, onComlpete);
         }
 
-        public void Woble(DirectionData directionData)
+        public void Wobble(DirectionData directionData)
         {
             if (!isIdle) return;
 

@@ -2,7 +2,7 @@
 
 namespace Assets.Scripts.game.dispenser.view
 {
-    public class DispensorView : MonoBehaviour
+    public class DispenserView : MonoBehaviour
     {
     }
 }

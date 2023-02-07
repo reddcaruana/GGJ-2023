@@ -1,17 +1,31 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using Assets.Scripts.controllers;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class ScoreScreenManager : BaseCanvasManager
 {
     /// <summary>
     /// The list of scores.
     /// </summary>
-    private static List<ScoreEntry> scoreList = new List<ScoreEntry>();
+    private static readonly List<ScoreEntry> ScoreList = new List<ScoreEntry>();
+
+    /// <summary>
+    /// The score file.
+    /// </summary>
+    private readonly string _scoreFile = "/scores.egg";
+
+    /// <summary>
+    /// The score file path.
+    /// </summary>
+    private string FilePath => Application.persistentDataPath + _scoreFile;
 
     /// <summary>
     /// The last score entered.
@@ -38,7 +52,10 @@ public class ScoreScreenManager : BaseCanvasManager
     /// </summary>
     private void Start()
     {
-        int score = ScoreController.TotalScore();
+        if (ScoreList.Count == 0)
+            LoadScores();
+        
+        int score = ScoreController.TotalScore;
         string points = score == 1 ? "pt" : "pts";
         text.SetText($"{score}<size=48>{points}</size>");
         
@@ -50,7 +67,7 @@ public class ScoreScreenManager : BaseCanvasManager
     /// </summary>
     private void BuildUI()
     {
-        ScoreEntry[] top = scoreList.Take(4).ToArray();
+        ScoreEntry[] top = ScoreList.Take(4).ToArray();
         for (int i = 0; i < topScores.Length; i++)
         {
             if (i > top.Length - 1)
@@ -64,7 +81,7 @@ public class ScoreScreenManager : BaseCanvasManager
             if (lastScore == top[i]) topScores[i].Glow(); 
         }
 
-        int index = scoreList.IndexOf(lastScore);
+        int index = ScoreList.IndexOf(lastScore);
         unqualifiedContainer.SetActive(index > 3);
         
         if (index < 3) return;
@@ -81,14 +98,61 @@ public class ScoreScreenManager : BaseCanvasManager
         foreach (LetterInput letter in letterInputs)
             teamName += letter.Value;
 
-        ScoreEntry entry = new ScoreEntry(teamName, ScoreController.TotalScore());
-        scoreList.Add(entry);
-        scoreList.Sort(ScoreComparer);
+        ScoreEntry entry = new ScoreEntry(teamName, ScoreController.TotalScore);
+        ScoreList.Add(entry);
+        ScoreList.Sort(ScoreComparer);
         
         lastScore = entry;
+        SaveScores();
 
         BuildUI();
         StartCoroutine(LobbyDelayRoutine());
+    }
+
+    /// <summary>
+    /// Loads the player scores.
+    /// </summary>
+    private void LoadScores()
+    {
+        try
+        {
+            if (!File.Exists(FilePath)) return;
+        
+            StreamReader reader = new StreamReader(FilePath);
+            while (!reader.EndOfStream)
+            {
+                string line = reader.ReadLine();
+                if (line == string.Empty) break;
+            
+                ScoreList.Add(JsonUtility.FromJson<ScoreEntry>(line));
+            }
+
+            ScoreList.Sort(ScoreComparer);
+        }
+        catch (Exception e)
+        {
+            Debug.LogWarning("Could not read from file.");
+        }
+    }
+
+    /// <summary>
+    /// Saves the player scores.
+    /// </summary>
+    private void SaveScores()
+    {
+        try
+        {
+            File.Delete(FilePath);
+
+            StreamWriter writer = new StreamWriter(FilePath);
+            foreach (var score in ScoreList)
+                writer.WriteLine(JsonUtility.ToJson(score));
+            writer.Close();
+        }
+        catch (Exception e)
+        {
+            Debug.LogWarning("Could not save to file.");
+        }
     }
 
     /// <summary>

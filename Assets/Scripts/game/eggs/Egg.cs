@@ -112,7 +112,7 @@ namespace Assets.Scripts.game.eggs
             void OnComplete() => this.arrivedCallback(this);
         }
 
-        public void MoveToAndBreack(Vector3 to, float duration)
+        public void MoveToAndBreak(Vector3 to, float duration)
         {
             KillAnimation();
             arrivedCallback = null;
@@ -121,7 +121,7 @@ namespace Assets.Scripts.game.eggs
 
         public void MouthPosition(Vector3 vector3) => view.transform.position = vector3;
 
-        public bool OnCollisiosnCourse(Egg egg) => egg.to == from;
+        public bool OnCollisionCourse(Egg egg) => egg.to == from;
 
         public Vector3 GetCurrentPosition() => view.transform.position;
 
